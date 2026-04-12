@@ -1,4 +1,4 @@
-/** 旅行日誌 — 由 data/旅行日誌.csv 產生 */
+/** 旅行日誌資料 */
 var JOURNAL_ENTRIES = [
   {
     "title": "落地利馬辦理波利維亞簽證",

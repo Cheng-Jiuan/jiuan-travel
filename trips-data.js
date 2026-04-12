@@ -1,9 +1,5 @@
 /**
-
- * 旅程資料 — 由 notion_sync.py 自動同步產生。
-
- * featured: true 顯示於首頁精選攻略。
-
+ * 旅程資料
  */
 
 function escapeHtml(s) {
@@ -58,7 +54,7 @@ var TRIPS_DATA = [
   {
     "id": "錯過雅馬遜雨林飛機",
     "name": "錯過雅馬遜雨林飛機",
-    "summary": "test",
+    "summary": "一段在高海拔與荒原之間反覆被風景震住的南美旅程。",
     "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200",
     "href": "#",
     "tag": "南美洲",
@@ -74,23 +70,6 @@ var TRIPS_DATA = [
     "year": 2026,
     "days": 9,
     "start": "2026-02-01",
-    "end": "",
-    "status": "已發佈",
-    "featured": false
-  },
-  {
-    "id": "測測",
-    "name": "測測",
-    "summary": "測",
-    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200",
-    "href": "#",
-    "tag": "",
-    "regions": [],
-    "countries": [],
-    "cities": [],
-    "year": 2025,
-    "days": 2,
-    "start": "2025-04-11",
     "end": "",
     "status": "已發佈",
     "featured": false
