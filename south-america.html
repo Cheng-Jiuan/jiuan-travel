@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>南美壯遊攻略 - Jiuan's Travel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { line-height: 1.7; scroll-behavior: smooth; }
+    .article-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .article-card:hover { transform: translateY(-8px); shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+    .filter-btn.active { background-color: #0284c7; color: white; box-shadow: 0 10px 15px -3px rgba(2, 132, 199, 0.3); }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans leading-relaxed text-gray-800">
+
+  <nav class="bg-sky-200 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="index.html" class="text-sky-800 font-black text-lg">Jiuan's Travel</a>
+      <a href="index.html" class="text-sm font-medium text-sky-800 hover:text-sky-600 transition-colors">← 回到首頁</a>
+    </div>
+  </nav>
+
+  <header class="relative h-[350px] w-full overflow-hidden">
+    <img src="https://images.unsplash.com/photo-1485738422979-f5c462d49f74?q=80&w=2070" class="w-full h-full object-cover">
+    <div class="absolute inset-0 bg-black/50 flex items-center justify-center text-center text-white">
+      <div class="px-4">
+        <nav class="text-[10px] uppercase tracking-[0.3em] mb-3 opacity-70">Home / Americas</nav>
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">南美洲旅遊攻略</h1>
+        <p class="text-lg opacity-90 font-light tracking-widest">30 天跨越秘魯、玻利維亞與智利的壯遊日記</p>
+      </div>
+    </div>
+  </header>
+
+  <section class="max-w-4xl mx-auto px-4 py-16 text-center">
+    <div class="flex justify-center mb-6"><div class="w-px h-12 bg-sky-300"></div></div>
+    <h2 class="text-2xl md:text-3xl font-serif italic text-gray-800 mb-6 leading-relaxed">
+      「在安地斯山脈，時間是垂直流動的。」
+    </h2>
+    <p class="text-gray-500 text-sm md:text-base leading-loose max-w-2xl mx-auto">
+      從海拔 0 公尺的太平洋海岸，到 5000 公尺的荒涼高原。這不僅是一場跨越國境的旅行，更是一次重新校正生命節奏的練習。
+    </p>
+  </section>
+
+  <section class="sticky top-[52px] z-40 bg-gray-50/95 backdrop-blur-md py-6 border-y border-gray-100">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex flex-wrap justify-center gap-3">
+        <button class="filter-btn active px-6 py-2 rounded-full text-xs font-bold transition-all">全部文章</button>
+        <button class="filter-btn px-6 py-2 rounded-full bg-white border border-gray-200 text-gray-500 text-xs font-bold hover:border-sky-300 transition-all">秘魯</button>
+        <button class="filter-btn px-6 py-2 rounded-full bg-white border border-gray-200 text-gray-500 text-xs font-bold hover:border-sky-300 transition-all">玻利維亞</button>
+        <button class="filter-btn px-6 py-2 rounded-full bg-white border border-gray-200 text-gray-500 text-xs font-bold hover:border-sky-300 transition-all">智利</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="lg:col-span-3 space-y-10">
+  
+    <div class="flex items-center gap-4 mb-2">
+      <h2 class="text-2xl font-bold text-gray-900 whitespace-nowrap">文章列表</h2>
+      <div class="h-[1px] flex-1 bg-gray-200"></div>
+    </div>
+  
+    <article data-category="秘魯" class="article-card flex flex-col md:flex-row bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm">
+      <div class="md:w-2/5 aspect-video md:aspect-auto overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1526392060635-9d6019884377?q=80&w=800" class="w-full h-full object-cover">
+      </div>
+      <div class="p-8 md:w-3/5 flex flex-col justify-center">
+        <span class="text-[10px] font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded w-fit mb-3 uppercase">Peru</span>
+        <h3 class="text-2xl font-bold text-gray-900 mb-3 hover:text-sky-600 transition-colors">馬丘比丘：失落的印加古城與聖谷之旅</h3>
+        <p class="text-sm text-gray-500 line-clamp-2 mb-6">探訪世界七大奇蹟之一，分享從庫斯科出發的行程安排，以及如何應對當地的多變天氣。</p>
+        <div class="flex items-center justify-between pt-4 border-t border-gray-50 text-[11px] text-gray-400">
+          <span>FEB 12, 2026</span>
+          <span class="font-bold text-sky-600 cursor-pointer">READ MORE →</span>
+        </div>
+      </div>
+    </article>
+  
+    <article data-category="玻利維亞" class="article-card flex flex-col md:flex-row bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm">
+      <div class="md:w-2/5 aspect-video md:aspect-auto overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1518098268026-4e89f1a2cd8e?q=80&w=800" class="w-full h-full object-cover">
+      </div>
+      <div class="p-8 md:w-3/5 flex flex-col justify-center">
+        <span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded w-fit mb-3 uppercase">Bolivia</span>
+        <h3 class="text-2xl font-bold text-gray-900 mb-3 hover:text-sky-600 transition-colors">烏尤尼鹽沼：在純白之境尋找天空之鏡</h3>
+        <p class="text-sm text-gray-500 line-clamp-2 mb-6">當雨水覆蓋大地，天地連成一線。這是玻利維亞最迷人的瞬間，也是這趟旅程最難忘的風景。</p>
+        <div class="flex items-center justify-between pt-4 border-t border-gray-100 text-[11px] text-gray-400">
+          <span>FEB 15, 2026</span>
+          <span class="font-bold text-sky-600 cursor-pointer"><a href="uyuni-post.html" class="...">READ MORE →</a></span>
+        </div>
+      </div>
+    </article>
+  
+    <article data-category="智利" class="article-card flex flex-col md:flex-row bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm">
+      <div class="md:w-2/5 aspect-video md:aspect-auto overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1510333245464-a6907409403a?q=80&w=800" class="w-full h-full object-cover">
+      </div>
+      <div class="p-8 md:w-3/5 flex flex-col justify-center">
+        <span class="text-[10px] font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded w-fit mb-3 uppercase">Chile</span>
+        <h3 class="text-2xl font-bold text-gray-900 mb-3 hover:text-sky-600 transition-colors">阿塔卡馬：世界上最乾燥的紅土沙漠</h3>
+        <p class="text-sm text-gray-500 line-clamp-2 mb-6">從聖佩德羅出發，探索月亮谷與繁星點點的夜空。智利的荒漠美得讓人窒息。</p>
+        <div class="flex items-center justify-between pt-4 border-t border-gray-100 text-[11px] text-gray-400">
+          <span>FEB 20, 2026</span>
+          <span class="font-bold text-sky-600 cursor-pointer">READ MORE →</span>
+        </div>
+      </div>
+    </article>
+  
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const articles = document.querySelectorAll('article[data-category]');
+  
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // 1. 更新按鈕視覺
+          filterBtns.forEach(b => {
+            b.classList.remove('active', 'bg-sky-600', 'text-white');
+            b.classList.add('bg-white', 'text-gray-500');
+          });
+          btn.classList.add('active', 'bg-sky-600', 'text-white');
+          btn.classList.remove('bg-white', 'text-gray-500');
+  
+          // 2. 取得要篩選的國家（取冒號前的字，例如：秘魯）
+          const filterTarget = btn.textContent.split('：')[0].trim();
+  
+          articles.forEach(article => {
+            const category = article.getAttribute('data-category');
+            if (filterTarget === '全部文章' || category === filterTarget) {
+              article.style.display = 'flex';
+            } else {
+              article.style.display = 'none';
+            }
+          });
+        });
+      });
+    });
+  </script>
+
+  

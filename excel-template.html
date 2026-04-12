@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文章懶人包 — Jiuan's Travel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&display=swap');
+    :root {
+      --sky: #0284c7;
+      --ink: #0f172a;
+    }
+    body { font-family: ui-sans-serif, system-ui, sans-serif; }
+    .serif { font-family: 'Noto Serif TC', Georgia, serif; }
+    .sans { font-family: ui-sans-serif, system-ui, sans-serif; }
+    .lp-card {
+      transition: transform .2s, box-shadow .2s;
+    }
+    .lp-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px -4px rgba(14,165,233,.15);
+    }
+    .tag-pill {
+      font-family: ui-sans-serif, sans-serif;
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      border-radius: 999px;
+      padding: .18rem .6rem;
+    }
+    .country-row + .country-row {
+      border-top: 1px solid #f1f5f9;
+      margin-top: .5rem;
+      padding-top: .5rem;
+    }
+    /* preview drawer */
+    #drawer {
+      position: fixed; inset: 0; z-index: 50;
+      display: flex; align-items: flex-end;
+      background: rgba(15,23,42,.45);
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s;
+    }
+    #drawer.open { opacity: 1; pointer-events: all; }
+    #drawer-panel {
+      width: 100%; max-width: 640px; margin: 0 auto;
+      background: #fff;
+      border-radius: 1.25rem 1.25rem 0 0;
+      max-height: 85vh;
+      overflow-y: auto;
+      transform: translateY(100%);
+      transition: transform .3s cubic-bezier(.4,0,.2,1);
+    }
+    #drawer.open #drawer-panel { transform: translateY(0); }
+    pre { white-space: pre-wrap; word-break: break-word; }
+    /* search highlight */
+    mark { background: #fde68a; border-radius: 2px; padding: 0 1px; }
+    .filter-btn.active {
+      background: var(--sky);
+      color: #fff;
+      border-color: var(--sky);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+
+  <!-- NAV -->
+  <nav class="bg-sky-200 sticky top-0 z-40 border-b border-sky-300/30">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <a href="index.html" class="sans text-sky-900 font-black text-lg tracking-tight">Jiuan's Travel</a>
+      <div class="flex items-center gap-3 text-sm">
+        <a href="post-editor.html" class="sans text-xs font-bold text-sky-800 hover:text-sky-600 border border-sky-400/40 rounded-full px-3 py-1 transition-colors">新增文章</a>
+        <a href="journeys.html" class="sans text-xs font-bold text-sky-800 hover:text-sky-600">← 全部旅程</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="bg-white border-b border-slate-100">
+    <div class="max-w-5xl mx-auto px-4 py-10">
+      <p class="sans text-[10px] font-bold text-slate-400 uppercase tracking-[.25em] mb-2">Lazy Pack · 懶人包</p>
+      <h1 class="sans text-2xl md:text-3xl font-black text-slate-900">旅遊文章懶人包</h1>
+      <p class="sans mt-2 text-sm text-slate-500 max-w-xl">每趟旅程的重點資訊一覽，可直接預覽或下載分享給旅伴。</p>
+      <!-- search + filter -->
+      <div class="mt-5 flex flex-col sm:flex-row gap-3">
+        <input id="search-input" type="search" placeholder="搜尋旅程、國家、城市…"
+          class="sans flex-1 text-sm border border-slate-200 rounded-xl px-4 py-2 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100 bg-white">
+        <div id="region-filters" class="flex flex-wrap gap-1.5"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="max-w-5xl mx-auto px-4 py-8 pb-24">
+    <p id="empty-msg" class="hidden sans text-sm text-slate-400 text-center py-16">找不到符合的旅程。</p>
+    <div id="cards-grid" class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"></div>
+  </main>
+
+  <!-- DRAWER PREVIEW -->
+  <div id="drawer" role="dialog" aria-modal="true" aria-label="懶人包預覽">
+    <div id="drawer-panel">
+      <div class="sticky top-0 bg-white border-b border-slate-100 px-5 py-4 flex items-center justify-between">
+        <h2 id="drawer-title" class="sans font-bold text-slate-900 text-base"></h2>
+        <div class="flex gap-2">
+          <button id="drawer-dl-txt" class="sans text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-lg hover:bg-amber-100 transition-colors">⬇ .txt</button>
+          <button id="drawer-dl-md" class="sans text-xs font-semibold text-sky-700 bg-sky-50 border border-sky-200 px-3 py-1.5 rounded-lg hover:bg-sky-100 transition-colors">⬇ .md</button>
+          <button id="drawer-close" class="sans text-xs font-semibold text-slate-500 bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-lg hover:bg-slate-200 transition-colors">✕ 關閉</button>
+        </div>
+      </div>
+      <pre id="drawer-content" class="sans px-5 py-5 text-xs text-slate-700 leading-relaxed"></pre>
+    </div>
+  </div>
+
+  <script src="trips-data.js"></script>
+  <script src="trip-detail-data.js"></script>
+  <script>
+(function () {
+  'use strict';
+
+  // ── helpers ──────────────────────────────────────────────
+  function esc(s) {
+    if (s == null) return '';
+    var d = document.createElement('div'); d.textContent = s; return d.innerHTML;
+  }
+  function dlText(content, filename) {
+    var blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+  }
+
+  // ── 懶人包內容產生器 ──────────────────────────────────────
+  function buildLazyPack(trip, fmt) {
+    var isMd = fmt === 'md';
+    var sep  = isMd ? '---' : '════════════════════════════════';
+    var h1   = isMd ? '# '  : '▌ ';
+    var h2   = isMd ? '## ' : '◆ ';
+    var h3   = isMd ? '### ': '• ';
+    var li   = isMd ? '- '  : '  · ';
+    var lines = []; function ln(s){ lines.push(s == null ? '' : s); }
+
+    // 取得 guide 資料
+    var detail = (typeof TRIP_DETAILS !== 'undefined') ? TRIP_DETAILS[trip.id] : null;
+    var guide  = detail ? detail.guide : null;
+    var countries = detail ? detail.countries : null;
+
+    // ── 標題區 ──
+    ln(h1 + trip.name);
+    if (guide && guide.eyebrow) ln((isMd ? '> ' : '') + guide.eyebrow);
+    else if (trip.summary)     ln((isMd ? '> ' : '') + trip.summary);
+    ln('');
+
+    var meta = [];
+    if (trip.countries && trip.countries.length) meta.push('📍 ' + trip.countries.join('・'));
+    if (trip.cities    && trip.cities.length)    meta.push('🏙 ' + trip.cities.join('・'));
+    if (trip.days)  meta.push('🗓 ' + trip.days + ' 天');
+    if (trip.start && trip.end) meta.push('📅 ' + trip.start + ' ～ ' + trip.end);
+    if (trip.year)  meta.push('📆 ' + trip.year + ' 年');
+    if (meta.length) ln(meta.join('　'));
+    ln('');
+    ln(sep);
+
+    // ── 開場引言（來自 guide.lead）──
+    if (guide && guide.lead) {
+      ln('');
+      ln(h2 + '✍️ 開場');
+      ln('');
+      ln(guide.lead);
+      ln('');
+      ln(sep);
+    }
+
+    // ── 每日行程（來自 guide.sections 的 route 型別）──
+    if (guide && guide.sections) {
+      var routes = guide.sections.filter(function(s){ return s.type === 'route'; });
+      if (routes.length) {
+        ln('');
+        ln(h2 + '📅 行程概覽');
+        routes.forEach(function(r) {
+          if (r.title) { ln(''); ln(h3 + r.title); }
+          (r.steps || []).forEach(function(step) { ln(li + step); });
+        });
+        ln('');
+        ln(sep);
+      }
+    }
+
+    // ── 重點提醒（來自 callout）──
+    if (guide && guide.sections) {
+      var callouts = guide.sections.filter(function(s){ return s.type === 'callout'; });
+      if (callouts.length) {
+        ln('');
+        ln(h2 + '💡 重點提醒');
+        callouts.forEach(function(c) {
+          ln('');
+          ln((isMd ? '**' : '  ▸ ') + (c.title || '') + (isMd ? '**' : ''));
+          ln((isMd ? '> ' : '  ') + (c.body || ''));
+        });
+        ln('');
+        ln(sep);
+      }
+    }
+
+    // ── 各國詳情（來自 countries）──
+    if (countries && countries.length) {
+      ln('');
+      ln(h2 + '🗺 旅遊地點 & 亮點');
+      countries.forEach(function(c) {
+        ln('');
+        ln(h3 + (isMd ? '' : '🌏 ') + c.name);
+        var spots = c.journeySpots || [];
+        var validSpots = spots.filter(function(s){ return s && s !== '（待補）'; });
+        if (validSpots.length) {
+          validSpots.forEach(function(s){ ln(li + s); });
+        }
+        if (c.food && c.food !== '（待補）')    { ln(''); ln('🍜 美食推薦：' + c.food); }
+        if (c.moments && c.moments !== '（待補）') { ln(''); ln('💬 深刻瞬間：「' + c.moments + '」'); }
+      });
+      ln('');
+      ln(sep);
+    }
+
+    // ── FAQ（來自 guide.sections 的 faq 型別）──
+    if (guide && guide.sections) {
+      var faqs = guide.sections.filter(function(s){ return s.type === 'faq'; });
+      faqs.forEach(function(f) {
+        if (!f.items || !f.items.length) return;
+        ln('');
+        ln(h2 + '❓ ' + (f.title || 'FAQ'));
+        f.items.forEach(function(item) {
+          ln('');
+          ln((isMd ? '**Q: ' : 'Q: ') + item.q + (isMd ? '**' : ''));
+          ln((isMd ? '> ' : 'A: ') + item.a);
+        });
+        ln('');
+        ln(sep);
+      });
+    }
+
+    // ── 頁尾 ──
+    ln('');
+    ln('本懶人包由 Jiuan\'s Travel 自動產生');
+    if (trip.year) ln('旅遊年份：' + trip.year);
+    return lines.join('\n');
+  }
+
+  // ── 產生旅程卡片 HTML ──────────────────────────────────────
+  function makeCard(trip) {
+    var detail   = (typeof TRIP_DETAILS !== 'undefined') ? TRIP_DETAILS[trip.id] : null;
+    var guide    = detail ? detail.guide : null;
+    var countries = detail ? detail.countries : null;
+
+    // meta tags
+    var metaTags = '';
+    if (trip.year) metaTags += '<span class="tag-pill bg-slate-100 text-slate-500">' + esc(String(trip.year)) + '</span>';
+    if (trip.days) metaTags += '<span class="tag-pill bg-sky-50 text-sky-600">🗓 ' + esc(String(trip.days)) + ' 天</span>';
+    (trip.regions || []).slice(0,1).forEach(function(r){
+      metaTags += '<span class="tag-pill bg-emerald-50 text-emerald-600">' + esc(r) + '</span>';
+    });
+
+    // country rows preview
+    var countryRows = '';
+    if (countries && countries.length) {
+      countries.forEach(function(c) {
+        var spots = (c.journeySpots || []).filter(function(s){ return s && s !== '（待補）'; }).slice(0,3);
+        countryRows +=
+          '<div class="country-row">' +
+          '<p class="sans text-[11px] font-bold text-sky-700 mb-0.5">🌏 ' + esc(c.name) + '</p>' +
+          (spots.length ? '<p class="sans text-[11px] text-slate-500">📌 ' + spots.map(esc).join(' · ') + (c.journeySpots.length > 3 ? ' …' : '') + '</p>' : '') +
+          (c.food && c.food !== '（待補）' ? '<p class="sans text-[11px] text-slate-500">🍜 ' + esc(c.food) + '</p>' : '') +
+          '</div>';
+      });
+    } else if (guide && guide.sections) {
+      var infoBoxes = guide.sections.filter(function(s){ return s.type === 'infoBox'; });
+      infoBoxes.slice(0,1).forEach(function(box) {
+        (box.rows || []).slice(0,3).forEach(function(row) {
+          countryRows += '<div class="sans text-[11px] text-slate-500"><strong class="text-slate-700">' + esc(row[0]) + '</strong> ' + esc(row[1]) + '</div>';
+        });
+      });
+    }
+
+    var leadText = (guide && guide.lead) ? guide.lead.slice(0, 80) + (guide.lead.length > 80 ? '…' : '') : (trip.summary || '');
+
+    var card = document.createElement('div');
+    card.className = 'lp-card bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col';
+    card.dataset.tripId = trip.id;
+    card.dataset.searchText = [trip.name, trip.summary, (trip.countries||[]).join(' '), (trip.cities||[]).join(' '), (trip.regions||[]).join(' ')].join(' ').toLowerCase();
+    card.dataset.region = (trip.regions || []).join(',');
+
+    card.innerHTML =
+      '<div class="relative h-36 bg-slate-200 overflow-hidden flex-shrink-0">' +
+      '<img src="' + esc(trip.image) + '" alt="" class="w-full h-full object-cover" loading="lazy">' +
+      '<div class="absolute inset-0 bg-gradient-to-t from-black/65 to-transparent"></div>' +
+      '<div class="absolute bottom-0 left-0 right-0 p-4">' +
+      '<p class="sans text-white font-black text-sm leading-tight">' + esc(trip.name) + '</p>' +
+      '</div></div>' +
+      '<div class="px-4 pt-3 pb-2 flex flex-wrap gap-1">' + metaTags + '</div>' +
+      (leadText ? '<p class="sans px-4 text-[12px] text-slate-500 leading-relaxed line-clamp-2 mb-2">' + esc(leadText) + '</p>' : '') +
+      (countryRows ? '<div class="px-4 pb-3 space-y-1">' + countryRows + '</div>' : '') +
+      '<div class="mt-auto border-t border-slate-100 px-4 py-3 flex gap-2">' +
+      '<button class="btn-preview sans flex-1 text-xs font-semibold text-slate-700 bg-slate-50 border border-slate-200 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors">👁 預覽懶人包</button>' +
+      '<button class="btn-dl-txt sans text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-3 py-2 rounded-lg hover:bg-amber-100 transition-colors">⬇ .txt</button>' +
+      '<button class="btn-dl-md sans text-xs font-semibold text-sky-700 bg-sky-50 border border-sky-200 px-3 py-2 rounded-lg hover:bg-sky-100 transition-colors">⬇ .md</button>' +
+      '</div>';
+
+    card.querySelector('.btn-preview').addEventListener('click', function() { openDrawer(trip); });
+    card.querySelector('.btn-dl-txt').addEventListener('click', function() { dlText(buildLazyPack(trip,'txt'), trip.id+'-懶人包.txt'); });
+    card.querySelector('.btn-dl-md').addEventListener('click',  function() { dlText(buildLazyPack(trip,'md'),  trip.id+'-懶人包.md');  });
+    return card;
+  }
+
+  // ── Drawer ───────────────────────────────────────────────
+  var _drawerTrip = null;
+  function openDrawer(trip) {
+    _drawerTrip = trip;
+    document.getElementById('drawer-title').textContent = trip.name;
+    document.getElementById('drawer-content').textContent = buildLazyPack(trip, 'txt');
+    document.getElementById('drawer').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    document.getElementById('drawer').classList.remove('open');
+    document.body.style.overflow = '';
+    _drawerTrip = null;
+  }
+  document.getElementById('drawer-close').addEventListener('click', closeDrawer);
+  document.getElementById('drawer').addEventListener('click', function(e) {
+    if (e.target === this) closeDrawer();
+  });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeDrawer(); });
+  document.getElementById('drawer-dl-txt').addEventListener('click', function() {
+    if (_drawerTrip) dlText(buildLazyPack(_drawerTrip,'txt'), _drawerTrip.id+'-懶人包.txt');
+  });
+  document.getElementById('drawer-dl-md').addEventListener('click', function() {
+    if (_drawerTrip) dlText(buildLazyPack(_drawerTrip,'md'), _drawerTrip.id+'-懶人包.md');
+  });
+
+  // ── 渲染所有卡片 ─────────────────────────────────────────
+  var allCards = [];
+  function init() {
+    if (typeof TRIPS_DATA === 'undefined' || !TRIPS_DATA.length) {
+      document.getElementById('empty-msg').textContent = '尚未載入旅程資料（trips-data.js）。';
+      document.getElementById('empty-msg').classList.remove('hidden');
+      return;
+    }
+
+    // 收集所有地區
+    var regionSet = {};
+    TRIPS_DATA.forEach(function(t) { (t.regions||[]).forEach(function(r){ regionSet[r]=true; }); });
+    var regions = Object.keys(regionSet).sort();
+    var filterContainer = document.getElementById('region-filters');
+    var activeRegion = '';
+
+    // 全部按鈕
+    var allBtn = document.createElement('button');
+    allBtn.className = 'sans filter-btn active text-[11px] font-bold border border-slate-200 rounded-full px-3 py-1 bg-white text-slate-600 transition-colors';
+    allBtn.textContent = '全部';
+    allBtn.addEventListener('click', function() {
+      activeRegion = '';
+      document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+      allBtn.classList.add('active');
+      applyFilters();
+    });
+    filterContainer.appendChild(allBtn);
+
+    regions.forEach(function(r) {
+      var btn = document.createElement('button');
+      btn.className = 'sans filter-btn text-[11px] font-bold border border-slate-200 rounded-full px-3 py-1 bg-white text-slate-600 transition-colors';
+      btn.textContent = r;
+      btn.addEventListener('click', function() {
+        activeRegion = r;
+        document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        applyFilters();
+      });
+      filterContainer.appendChild(btn);
+    });
+
+    // 產生卡片
+    var grid = document.getElementById('cards-grid');
+    TRIPS_DATA.forEach(function(trip) {
+      var card = makeCard(trip);
+      allCards.push(card);
+      grid.appendChild(card);
+    });
+
+    function applyFilters() {
+      var q = document.getElementById('search-input').value.trim().toLowerCase();
+      var visible = 0;
+      allCards.forEach(function(card) {
+        var matchRegion = !activeRegion || (card.dataset.region || '').indexOf(activeRegion) >= 0;
+        var matchSearch = !q || (card.dataset.searchText || '').indexOf(q) >= 0;
+        card.style.display = (matchRegion && matchSearch) ? '' : 'none';
+        if (matchRegion && matchSearch) visible++;
+      });
+      document.getElementById('empty-msg').classList.toggle('hidden', visible > 0);
+    }
+
+    document.getElementById('search-input').addEventListener('input', applyFilters);
+  }
+
+  init();
+
+})();
+  </script>
+</body>
+</html> 

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>全部旅程 - Jiuan's Travel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{--ink:#163038;--sea:#2c6a74;--line:rgba(22,48,56,.12)}
+    html{scroll-behavior:smooth}
+    body{margin:0;color:var(--ink);line-height:1.7;font-family:"Avenir Next","PingFang TC","Noto Sans TC",sans-serif;background:radial-gradient(circle at top left,rgba(216,141,77,.08),transparent 26%),linear-gradient(180deg,#fbf8f2 0%,#f4f8f8 34%,#fafcfc 100%)}
+    .hero-shell{position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(36,98,108,.74),rgba(74,128,136,.56)),url('https://images.unsplash.com/photo-1488085061387-422e29b40080?q=80&w=1600') center/cover;box-shadow:0 22px 50px rgba(20,64,72,.12);border:1px solid rgba(31,85,96,.08)}
+    .hero-shell::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.08),transparent 35%),radial-gradient(circle at top right,rgba(255,255,255,.24),transparent 24%);pointer-events:none}
+    .filter-panel{border:1px solid var(--line);background:rgba(255,255,255,.82);box-shadow:0 20px 45px rgba(22,48,56,.06);backdrop-filter:blur(12px)}
+    #journey-grid a{border-radius:1.6rem!important;border:1px solid rgba(22,48,56,.10)!important;background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(246,239,229,.74))!important;box-shadow:0 14px 34px rgba(22,48,56,.06)!important;transition:transform .24s ease,box-shadow .24s ease,border-color .24s ease!important}
+    #journey-grid a:hover{transform:translateY(-4px);border-color:rgba(44,106,116,.28)!important;box-shadow:0 22px 40px rgba(22,48,56,.10)!important}
+    #journey-grid a h3{color:var(--ink)!important} #journey-grid a p{color:rgba(22,48,56,.68)!important} #journey-grid a span{background:rgba(44,106,116,.08)!important;color:var(--sea)!important}
+  </style>
+</head>
+<body class="min-h-screen">
+  <nav class="sticky top-0 z-50 border-b border-sky-200/70 bg-[rgba(244,248,248,0.94)] shadow-sm backdrop-blur-xl">
+    <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-3">
+      <a href="index.html" class="text-lg font-black tracking-tight text-sky-800">Jiuan's Travel</a>
+      <div class="flex items-center gap-3 text-sm font-medium text-sky-900/80">
+        <span class="hidden sm:inline">全部旅程</span>
+        <a href="year-log.html" class="hidden sm:inline-flex rounded-full border border-sky-300 bg-white/80 px-3 py-1.5 transition hover:bg-sky-50 hover:text-sky-900">年份記錄</a>
+        <a href="index.html" class="transition hover:text-sky-700">← 回到首頁</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero-shell mx-auto mt-4 max-w-6xl rounded-[2rem] px-4 text-white sm:px-6 lg:px-8">
+    <div class="relative z-10 grid gap-8 py-10 md:grid-cols-[1.5fr_0.9fr] md:items-end md:py-14">
+      <div>
+        <p class="mb-3 text-[11px] font-bold uppercase tracking-[0.38em] text-white/82">Journey Index · Explore Archive</p>
+        <h1 class="max-w-3xl text-4xl font-bold leading-tight md:text-6xl [text-shadow:0_2px_18px_rgba(15,40,47,0.18)]">把所有旅程排開來看，像在翻一整本旅行目錄。</h1>
+        <p class="mt-4 max-w-2xl text-sm leading-7 text-white/94 md:text-base [text-shadow:0_1px_10px_rgba(15,40,47,0.12)]">依年份、洲別、國家與關鍵字篩選，快速找到想回味的那段路，或下一個想重新寫成故事的目的地。</p>
+      </div>
+      <div class="grid gap-3 sm:grid-cols-2 md:grid-cols-1">
+        <div class="rounded-[1.4rem] border border-white/30 bg-white/12 p-4 backdrop-blur-md"><p class="text-[11px] uppercase tracking-[0.28em] text-white/62">使用方式</p><p class="mt-2 text-sm leading-6 text-white/88">先從洲別或年份縮小範圍，再點進每篇旅程看完整細節。</p></div>
+        <div class="rounded-[1.4rem] border border-white/30 bg-white/12 p-4 backdrop-blur-md"><p class="text-[11px] uppercase tracking-[0.28em] text-white/62">內容型態</p><p class="mt-2 text-sm leading-6 text-white/88">卡片收錄封面、摘要與標籤，之後可由 Notion 統一同步。</p></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-6xl px-4 py-8 pb-20">
+    <section class="mb-8 grid gap-4 rounded-[1.8rem] border border-[var(--line)] bg-white/65 p-5 shadow-[0_20px_45px_rgba(22,48,56,0.06)] backdrop-blur sm:grid-cols-3">
+      <div><p class="text-[11px] font-bold uppercase tracking-[0.28em] text-[var(--sea)]/60">探索方式</p><p class="mt-2 text-sm text-[var(--ink)]/78">適合快速檢視所有旅程，也能從這裡切進單篇詳情頁。</p></div>
+      <div><p class="text-[11px] font-bold uppercase tracking-[0.28em] text-[var(--sea)]/60">適合情境</p><p class="mt-2 text-sm text-[var(--ink)]/78">找特定國家、整理年度清單、比較不同地區風格時最方便。</p></div>
+      <div><p class="text-[11px] font-bold uppercase tracking-[0.28em] text-[var(--sea)]/60">推薦搭配</p><p class="mt-2 text-sm text-[var(--ink)]/78">若想按時間回顧旅行軌跡，可搭配 <a href="year-log.html" class="font-semibold text-[var(--sea)] underline underline-offset-2">年份記錄</a> 一起看。</p></div>
+    </section>
+
+    <div class="filter-panel mb-8 rounded-[1.8rem] p-4 lg:p-5">
+      <div class="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-end">
+        <div class="min-w-[200px] flex-1"><label for="q" class="mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-[var(--sea)]/55">搜尋</label><input type="search" id="q" placeholder="名稱或摘要…" autocomplete="off" class="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"></div>
+        <div class="w-full sm:w-40"><label for="f-region" class="mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-[var(--sea)]/55">洲／區域</label><select id="f-region" class="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-sky-400"><option value="">全部</option></select></div>
+        <div class="w-full sm:w-40"><label for="f-country" class="mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-[var(--sea)]/55">國家</label><select id="f-country" class="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-sky-400"><option value="">全部</option></select></div>
+        <div class="w-full sm:w-32"><label for="f-year" class="mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-[var(--sea)]/55">年份</label><select id="f-year" class="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-sky-400"><option value="">全部</option></select></div>
+        <button type="button" id="btn-reset" class="rounded-xl border border-sky-200 bg-sky-50 px-4 py-2 text-sm font-medium text-sky-700 transition-colors hover:bg-sky-100">重設</button>
+      </div>
+    </div>
+
+    <p id="result-count" class="mb-4 text-xs text-[var(--sea)]/62" aria-live="polite"></p>
+    <div id="journey-grid" class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"></div>
+  </main>
+
+  <footer class="border-t border-[var(--line)] bg-white/70 py-10 text-center backdrop-blur"><p class="text-[10px] uppercase tracking-[0.24em] text-[var(--sea)]/55">© 2026 Jiuan's Travel · Journey Index</p></footer>
+
+  <script src="continent-map.js"></script><script src="trips-data.js"></script>
+  <script>
+    (function(){
+      if(typeof TRIPS_DATA==='undefined'||typeof renderTripCardHTML!=='function') return;
+      var regionFilter=(new URLSearchParams(location.search).get('continent')||'').trim();
+      function uniq(arr){var o={};arr.forEach(function(x){o[x]=1});return Object.keys(o).sort()}
+      function flatRegions(){return TRIPS_DATA.reduce(function(acc,t){return acc.concat(t.regions)},[])}
+      function availableCountries(rFilter){return TRIPS_DATA.filter(function(t){if(!rFilter)return true; if(typeof tripMatchesContinent==='function'&&typeof CONTINENT_LABELS!=='undefined'&&CONTINENT_LABELS[rFilter]) return tripMatchesContinent(t,rFilter); return t.regions.indexOf(rFilter)!==-1}).reduce(function(acc,t){return acc.concat(t.countries||[])},[])}
+      function fillCountrySelect(rFilter){var selC=document.getElementById('f-country');var current=selC.value;selC.innerHTML='<option value="">全部</option>';uniq(availableCountries(rFilter)).sort(function(a,b){return a.localeCompare(b,'zh-Hant')}).forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c;if(c===current)o.selected=true;selC.appendChild(o)})}
+      function fillSelects(){var selR=document.getElementById('f-region');var selY=document.getElementById('f-year'); if(typeof CONTINENT_LABELS!=='undefined')['asia','europe','americas','africa','oceania'].forEach(function(k){if(!TRIPS_DATA.some(function(t){return typeof tripMatchesContinent==='function'&&tripMatchesContinent(t,k)}))return;var o=document.createElement('option');o.value=k;o.textContent='── '+CONTINENT_LABELS[k];selR.appendChild(o)}); uniq(flatRegions()).forEach(function(r){var o=document.createElement('option');o.value=r;o.textContent='　'+r;selR.appendChild(o)}); uniq(TRIPS_DATA.map(function(t){return String(t.year)})).sort(function(a,b){return parseInt(b,10)-parseInt(a,10)}).forEach(function(y){var o=document.createElement('option');o.value=y;o.textContent=y;selY.appendChild(o)}); if(regionFilter&&Array.prototype.some.call(selR.options,function(o){return o.value===regionFilter;}))selR.value=regionFilter; fillCountrySelect(selR.value); selR.addEventListener('change',function(){fillCountrySelect(selR.value);render()})}
+      function filterTrips(){var q=(document.getElementById('q').value||'').trim().toLowerCase();var fr=document.getElementById('f-region').value;var fc=document.getElementById('f-country').value;var fy=document.getElementById('f-year').value; return TRIPS_DATA.filter(function(t){if(fr){var isContinentKey=typeof CONTINENT_LABELS!=='undefined'&&CONTINENT_LABELS[fr]; if(isContinentKey){if(typeof tripMatchesContinent==='function'&&!tripMatchesContinent(t,fr))return false}else if(t.regions.indexOf(fr)===-1)return false} if(fc&&t.countries.indexOf(fc)===-1)return false; if(fy&&String(t.year)!==fy)return false; if(q){var blob=(t.name+' '+t.summary+' '+t.countries.join(' ')+' '+t.cities.join(' ')).toLowerCase(); if(blob.indexOf(q)===-1)return false} return true})}
+      function render(){var list=filterTrips();document.getElementById('result-count').textContent='共 '+list.length+' 篇'+(list.length!==TRIPS_DATA.length?'（已篩選）':'');document.getElementById('journey-grid').innerHTML=list.map(renderTripCardHTML).join('')}
+      fillSelects(); if(regionFilter&&typeof CONTINENT_LABELS!=='undefined'&&CONTINENT_LABELS[regionFilter]){var note=document.createElement('p');note.id='continent-banner';note.className='mb-4 rounded-xl border border-sky-100 bg-sky-50 px-4 py-3 text-sm text-sky-800';note.textContent='已依「'+CONTINENT_LABELS[regionFilter]+'」篩選旅程。按重設可看全部。';document.querySelector('main').insertBefore(note,document.querySelector('main').firstChild)}
+      var preCountry=new URLSearchParams(location.search).get('country'); if(preCountry){var selPre=document.getElementById('f-country'); if(selPre){if(Array.prototype.some.call(selPre.options,function(o){return o.value===preCountry;}))selPre.value=preCountry; else{var ghost=document.createElement('option');ghost.value=preCountry;ghost.textContent=preCountry+'（尚未收錄）';selPre.appendChild(ghost);selPre.value=preCountry}}}
+      ['q','f-country','f-year'].forEach(function(id){var el=document.getElementById(id);el.addEventListener('input',render);el.addEventListener('change',render)});
+      document.getElementById('btn-reset').addEventListener('click',function(){document.getElementById('q').value='';document.getElementById('f-region').value='';fillCountrySelect('');document.getElementById('f-country').value='';document.getElementById('f-year').value='';regionFilter='';var banner=document.getElementById('continent-banner');if(banner)banner.remove();if(window.history&&window.history.replaceState)window.history.replaceState({},'', 'journeys.html');render()});
+      render();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新增旅遊文章 — Jiuan's Travel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--sky:#0284c7;--bd:#e2e8f0;--mu:#64748b;--ink:#0f172a}
+    html,body{height:100%}
+    body{display:flex;flex-direction:column;font-family:ui-sans-serif,system-ui,sans-serif;background:#f8faff;color:var(--ink);line-height:1.75}
+    .tnav{background:#bae6fd;border-bottom:1px solid #7dd3fc;padding:.6rem 1.25rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:60;flex-shrink:0}
+    .brand{font-family:sans-serif;font-weight:900;color:#0c4a6e;text-decoration:none;font-size:1.05rem}
+    .tnav-links{display:flex;gap:.75rem}
+    .tnav-links a{font-family:sans-serif;font-size:.78rem;font-weight:600;color:#075985;text-decoration:none;padding:.2rem .6rem;border-radius:999px;border:1px solid transparent}
+    .tnav-links a:hover{background:#7dd3fc40;border-color:#7dd3fc}
+    .shell{flex:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:0;overflow:hidden}
+    @media(max-width:900px){.shell{grid-template-columns:1fr}.pcol{display:none}.pcol.ms{display:flex}.ecol.mh{display:none}}
+    .ecol{display:flex;flex-direction:column;background:#fff;border-right:1px solid var(--bd);overflow:hidden}
+    .ehdr{padding:.9rem 1.4rem .75rem;border-bottom:1px solid var(--bd);flex-shrink:0}
+    .ehdr h1{font-family:sans-serif;font-size:.95rem;font-weight:800;color:#0c4a6e}
+    .ehdr p{font-family:sans-serif;font-size:.68rem;color:var(--mu);margin-top:.15rem}
+    .tab-row{display:flex;gap:.25rem;margin-top:.65rem;align-items:center;flex-wrap:wrap}
+    .tbtn{font-family:sans-serif;font-size:.68rem;font-weight:700;padding:.28rem .75rem;border-radius:999px;border:1.5px solid var(--bd);background:transparent;color:var(--mu);cursor:pointer;transition:all .15s;white-space:nowrap}
+    .tbtn.active{background:var(--sky);color:#fff;border-color:var(--sky)}
+    .mob-tog{display:none;font-family:sans-serif;font-size:.68rem;font-weight:700;padding:.28rem .75rem;border-radius:999px;border:1.5px solid var(--bd);background:transparent;color:var(--mu);cursor:pointer;margin-left:auto}
+    @media(max-width:900px){.mob-tog{display:inline-flex}}
+    .fscroll{flex:1;overflow-y:auto;padding:1rem 1.4rem 7rem;display:flex;flex-direction:column;gap:.9rem}
+    /* fields */
+    .field{display:flex;flex-direction:column;gap:.25rem}
+    .field label{font-family:sans-serif;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--mu)}
+    .field label .req{color:#e11d48;margin-left:2px}
+    input[type=text],input[type=url],input[type=number],select,textarea{width:100%;font-family:sans-serif;font-size:.84rem;color:var(--ink);background:#fff;border:1.5px solid var(--bd);border-radius:.55rem;padding:.45rem .75rem;outline:none;transition:border-color .15s,box-shadow .15s;line-height:1.5}
+    input:focus,select:focus,textarea:focus{border-color:var(--sky);box-shadow:0 0 0 3px rgba(2,132,199,.1)}
+    textarea{resize:vertical}
+    .hint{font-family:sans-serif;font-size:.62rem;color:#94a3b8;line-height:1.5}
+    .g2{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+    .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.65rem}
+    .g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:.65rem}
+    @media(max-width:500px){.g2,.g3,.g4{grid-template-columns:1fr 1fr}}
+    /* section divider */
+    .sdiv{display:flex;align-items:center;gap:.5rem;margin:.5rem 0 .1rem}
+    .sdiv span{font-family:sans-serif;font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#94a3b8;white-space:nowrap}
+    .sdiv::after{content:'';flex:1;height:1px;background:var(--bd)}
+    /* tag input */
+    .tag-wrap{display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;border:1.5px solid var(--bd);border-radius:.55rem;padding:.35rem .6rem;min-height:2.4rem;cursor:text;background:#fff}
+    .tag-wrap:focus-within{border-color:var(--sky);box-shadow:0 0 0 3px rgba(2,132,199,.1)}
+    .tag-item{font-family:sans-serif;font-size:.72rem;background:#e0f2fe;color:#0369a1;border-radius:999px;padding:.15rem .55rem;display:flex;align-items:center;gap:.3rem;white-space:nowrap}
+    .tag-item button{background:none;border:none;cursor:pointer;color:#0369a1;font-size:.8rem;line-height:1;padding:0}
+    .tag-wrap input{border:none;outline:none;font-family:sans-serif;font-size:.84rem;color:var(--ink);flex:1;min-width:80px;padding:0}
+    /* info table builder */
+    .info-row{display:grid;grid-template-columns:1fr 2fr auto;gap:.4rem;align-items:center}
+    .info-row input{font-size:.78rem;padding:.35rem .6rem}
+    .del-btn{background:none;border:none;cursor:pointer;color:#cbd5e1;font-size:1.1rem;line-height:1;padding:.1rem .3rem;border-radius:.3rem;transition:color .15s}
+    .del-btn:hover{color:#e11d48}
+    .add-row-btn{font-family:sans-serif;font-size:.7rem;font-weight:700;color:var(--sky);background:none;border:1.5px dashed #bae6fd;border-radius:.5rem;padding:.4rem .8rem;cursor:pointer;width:100%;margin-top:.3rem;transition:background .15s}
+    .add-row-btn:hover{background:#f0f9ff}
+    /* day builder */
+    .day-card{border:1.5px solid var(--bd);border-radius:.75rem;padding:.75rem 1rem;background:#fafafa}
+    .day-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem}
+    .day-label{font-family:sans-serif;font-size:.72rem;font-weight:800;color:var(--sky);background:#e0f2fe;border-radius:999px;padding:.15rem .65rem}
+    /* markdown editor */
+    #md-body{font-family:'SF Mono',Menlo,monospace;font-size:.78rem;line-height:1.9;min-height:260px;background:#f8fafc;tab-size:2}
+    #md-body:focus{background:#fff}
+    .md-toolbar{display:flex;flex-wrap:wrap;gap:.22rem;margin-bottom:.3rem}
+    .mdbtn{font-family:monospace;font-size:.62rem;font-weight:700;padding:.2rem .45rem;border-radius:.32rem;border:1px solid var(--bd);background:#f1f5f9;color:#334155;cursor:pointer;user-select:none}
+    .mdbtn:hover{background:#e0f2fe;border-color:#7dd3fc;color:#0369a1}
+    .cheat{background:#f0f9ff;border:1px solid #bae6fd;border-radius:.6rem;padding:.65rem .9rem;font-family:sans-serif;font-size:.64rem;color:#0369a1;line-height:1.75}
+    .cheat code{font-family:monospace;background:#e0f2fe;padding:.03rem .28rem;border-radius:.2rem;font-size:.62rem}
+    .cheat table{width:100%;border-collapse:collapse}
+    .cheat td{padding:.08rem .35rem .08rem 0;vertical-align:top}
+    .cheat td:first-child{width:42%;white-space:nowrap}
+    /* action bar */
+    .abar{position:sticky;bottom:0;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-top:1px solid var(--bd);padding:.65rem 1.4rem;display:flex;gap:.5rem;align-items:center;flex-shrink:0;z-index:20}
+    .btnp{font-family:sans-serif;font-size:.78rem;font-weight:800;padding:.5rem 1.2rem;border-radius:999px;border:none;background:var(--sky);color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(2,132,199,.25);transition:background .15s}
+    .btnp:hover{background:#0369a1}
+    .btns{font-family:sans-serif;font-size:.78rem;font-weight:700;padding:.45rem 1rem;border-radius:999px;border:1.5px solid var(--bd);background:#fff;color:#334155;cursor:pointer}
+    .btns:hover{border-color:var(--sky);color:var(--sky)}
+    .smsg{font-family:sans-serif;font-size:.7rem;color:#16a34a;font-weight:700;opacity:0;transition:opacity .25s;margin-left:.25rem}
+    .smsg.show{opacity:1}
+    /* preview */
+    .pcol{display:flex;flex-direction:column;background:#f1f5f9;overflow:hidden}
+    .phdr{padding:.65rem 1.4rem;border-bottom:1px solid var(--bd);background:#f0f9ff;display:flex;align-items:center;gap:.55rem;flex-shrink:0}
+    .ldot{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:blink 2s infinite;flex-shrink:0}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+    .phdr h2{font-family:sans-serif;font-size:.68rem;font-weight:800;color:#0369a1;text-transform:uppercase;letter-spacing:.12em}
+    #preview-frame{flex:1;overflow-y:auto}
+    /* article preview */
+    .ap{max-width:640px;margin:0 auto;padding:2rem 1.25rem 5rem}
+    .cover{border-radius:.75rem;overflow:hidden;margin-bottom:1.5rem;aspect-ratio:16/9;background:#e2e8f0}
+    .cover img{width:100%;height:100%;object-fit:cover;display:block}
+    .cover-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:sans-serif;font-size:.75rem;color:#94a3b8;flex-direction:column;gap:.4rem}
+    .art-cat{font-family:sans-serif;font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.2em;color:var(--sky);margin-bottom:.4rem}
+    .art-title{font-size:1.75rem;font-weight:900;color:#0f172a;line-height:1.2;margin-bottom:.5rem;letter-spacing:-.03em}
+    .art-sub{font-size:1rem;color:#64748b;margin-bottom:.85rem;font-style:italic}
+    .art-meta{font-family:sans-serif;font-size:.7rem;color:#94a3b8;display:flex;flex-wrap:wrap;gap:.6rem;padding-bottom:1.25rem;border-bottom:1px solid #f1f5f9;margin-bottom:1.25rem}
+    .art-meta span{display:flex;align-items:center;gap:.25rem}
+    .art-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1.25rem}
+    .art-tag{font-family:sans-serif;font-size:.65rem;font-weight:700;background:#f1f5f9;color:#475569;border-radius:999px;padding:.2rem .65rem}
+    .art-lead{font-size:.975rem;font-weight:500;color:#334155;line-height:1.9;margin-bottom:1.5rem;padding-bottom:1.25rem;border-bottom:1px solid #f1f5f9}
+    /* info card */
+    .info-card{border-radius:.875rem;border:1px solid #e0f2fe;background:linear-gradient(135deg,#f0f9ff,#fff);padding:1rem 1.25rem;margin:1.25rem 0}
+    .info-card-title{font-family:sans-serif;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#0369a1;margin-bottom:.65rem}
+    .info-card table{width:100%;border-collapse:collapse;font-size:.875rem}
+    .info-card td{padding:.35rem .4rem;border-bottom:1px solid #e0f2fe;vertical-align:top}
+    .info-card tr:last-child td{border-bottom:none}
+    .info-card td:first-child{font-weight:700;color:#0369a1;width:32%;white-space:nowrap}
+    /* days */
+    .day-section{border-left:3px solid #bae6fd;padding:.5rem 0 .5rem 1rem;margin:1rem 0}
+    .day-section h3{font-family:sans-serif;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--sky);margin-bottom:.4rem}
+    .day-section p{font-size:.9rem;color:#374151;margin-bottom:.5rem;line-height:1.8}
+    /* body */
+    .ab{color:#374151;font-size:.96rem;line-height:1.9}
+    .ab h2{font-size:1.25rem;font-weight:800;color:#0f172a;margin:2rem 0 .7rem;padding-bottom:.35rem;border-bottom:2px solid #e0f2fe}
+    .ab h3{font-size:1.02rem;font-weight:700;color:#1e293b;margin:1.4rem 0 .45rem}
+    .ab p{margin-bottom:1rem}
+    .ab ul,.ab ol{margin:0 0 1rem 1.35rem}
+    .ab li{margin-bottom:.3rem}
+    .ab blockquote{border-left:4px solid #0ea5e9;background:#f8fafc;border-radius:0 .75rem .75rem 0;padding:.65rem 1rem;margin:1.1rem 0;font-style:italic;color:#374151}
+    .ab hr{border:none;border-top:1px solid #f1f5f9;margin:1.75rem 0}
+    .ab strong{font-weight:700;color:#0f172a}
+    .ab em{font-style:italic}
+    .ab code{font-family:monospace;background:#f1f5f9;padding:.07rem .32rem;border-radius:.28rem;font-size:.87em;color:#0369a1}
+    .csky{border-radius:.875rem;border:1px solid #bae6fd;background:linear-gradient(135deg,#f0f9ff,#fff);padding:.9rem 1.1rem;margin:1.1rem 0}
+    .csky .ctitle{font-family:sans-serif;font-weight:800;font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:#0c4a6e;margin-bottom:.35rem}
+    .csky p{margin:0;font-size:.88rem;color:#0369a1}
+    .camb{border-radius:.875rem;border:1px solid #fde68a;background:#fffbeb;padding:.9rem 1.1rem;margin:1.1rem 0}
+    .camb .ctitle{font-family:sans-serif;font-weight:800;font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:#78350f;margin-bottom:.35rem}
+    .camb p{margin:0;font-size:.88rem;color:#92400e}
+    .ibox{border-radius:.875rem;border:1px solid #e5e7eb;background:#f9fafb;padding:.9rem 1.1rem;margin:1.1rem 0}
+    .ibox table{width:100%;border-collapse:collapse;font-size:.875rem}
+    .ibox td{padding:.35rem .45rem;border-bottom:1px solid #e5e7eb;vertical-align:top}
+    .ibox tr:last-child td{border-bottom:none}
+    .ibox td:first-child{font-weight:700;color:var(--sky);width:30%}
+    #pane-content,#pane-days,#pane-export{display:none}
+    #export-code{font-family:monospace;font-size:.7rem;line-height:1.7;background:#0f172a;color:#a5f3fc;padding:1.1rem;border-radius:.75rem;overflow-x:auto;max-height:50vh;overflow-y:auto;white-space:pre}
+  </style>
+</head>
+<body>
+
+  <nav class="tnav">
+    <a href="index.html" class="brand">Jiuan's Travel</a>
+    <div class="tnav-links">
+      <a href="index.html">首頁</a>
+      <a href="journeys.html">全部旅程</a>
+      <a href="trip-editor.html">進階編輯器</a>
+    </div>
+  </nav>
+
+  <div class="shell">
+    <!-- ─── LEFT EDIT ─── -->
+    <div class="ecol" id="ecol">
+      <div class="ehdr">
+        <h1>新增旅遊文章</h1>
+        <p>參考旅遊部落格格式填寫，右側即時預覽；完成後切「匯出」Tab 複製程式碼。</p>
+        <div class="tab-row">
+          <button class="tbtn active" data-tab="info">① 文章資訊</button>
+          <button class="tbtn" data-tab="practical">② 實用資訊卡</button>
+          <button class="tbtn" data-tab="days">③ 每日行程</button>
+          <button class="tbtn" data-tab="content">④ 文章內文</button>
+          <button class="tbtn" data-tab="export">⑤ 匯出</button>
+          <button class="mob-tog" id="mob-tog">👁 預覽</button>
+        </div>
+      </div>
+
+      <!-- ══ PANE: 文章資訊 ══ -->
+      <div id="pane-info" class="fscroll">
+        <div class="sdiv"><span>旅程綁定</span></div>
+        <div class="field">
+          <label>選擇現有旅程</label>
+          <select id="trip-select"><option value="">— 請選擇（自動填入 ID）—</option></select>
+        </div>
+        <div class="field">
+          <label>旅程 ID <span class="req">*</span></label>
+          <input type="text" id="f-id" placeholder="例：日本東京胖胖團">
+          <p class="hint">需與 trips-data.js 中的 id 完全相同。</p>
+        </div>
+
+        <div class="sdiv"><span>文章標題區</span></div>
+        <div class="field">
+          <label>文章主標題 <span class="req">*</span></label>
+          <input type="text" id="f-title" placeholder="例：東京 5 天 4 夜自由行｜超完整行程攻略">
+          <p class="hint">顯示為文章頁面的大標題 H1。</p>
+        </div>
+        <div class="field">
+          <label>文章副標題</label>
+          <input type="text" id="f-subtitle" placeholder="例：沒有大人帶的第一次東京獨旅">
+        </div>
+        <div class="field">
+          <label>分類標籤（eyebrow）</label>
+          <input type="text" id="f-eyebrow" placeholder="例：東北亞 · 日本 · 東京">
+          <p class="hint">顯示在標題上方的小字，通常是「地區 · 國家 · 城市」。</p>
+        </div>
+        <div class="g2">
+          <div class="field">
+            <label>目的地國家</label>
+            <input type="text" id="f-country" placeholder="日本">
+          </div>
+          <div class="field">
+            <label>目的地城市</label>
+            <input type="text" id="f-city" placeholder="東京、大阪">
+          </div>
+        </div>
+        <div class="g3">
+          <div class="field">
+            <label>旅遊類型</label>
+            <select id="f-triptype">
+              <option value="">— 選擇 —</option>
+              <option>自由行</option>
+              <option>半自助</option>
+              <option>跟團</option>
+              <option>打工度假</option>
+              <option>留學</option>
+              <option>商務出差</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>作者</label>
+            <input type="text" id="f-author" placeholder="Jiuan">
+          </div>
+          <div class="field">
+            <label>發佈日期</label>
+            <input type="text" id="f-pubdate" placeholder="2024.03.15">
+          </div>
+        </div>
+        <div class="g2">
+          <div class="field">
+            <label>閱讀時間（分鐘）</label>
+            <input type="number" id="f-readtime" placeholder="8" min="1">
+          </div>
+          <div class="field">
+            <label>推薦指數</label>
+            <select id="f-rating">
+              <option value="">— 選擇 —</option>
+              <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐ 強烈推薦</option>
+              <option value="⭐⭐⭐⭐">⭐⭐⭐⭐ 很推薦</option>
+              <option value="⭐⭐⭐">⭐⭐⭐ 普通</option>
+              <option value="⭐⭐">⭐⭐ 尚可</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="sdiv"><span>封面與視覺</span></div>
+        <div class="field">
+          <label>封面圖片 URL</label>
+          <input type="url" id="f-cover" placeholder="https://images.unsplash.com/...">
+          <p class="hint">建議比例 16:9，留空則使用旅程預設圖片。</p>
+        </div>
+        <div class="field">
+          <label>封面圖片說明文字（alt）</label>
+          <input type="text" id="f-cover-alt" placeholder="東京鐵塔夜景">
+        </div>
+
+        <div class="sdiv"><span>開場文字</span></div>
+        <div class="field">
+          <label>開場引言（lead）</label>
+          <textarea id="f-lead" rows="3" placeholder="第一段話，帶讀者進入這趟旅行的氛圍……"></textarea>
+          <p class="hint">會以較大字體顯示在文章開頭，吸引讀者繼續閱讀。</p>
+        </div>
+        <div class="field">
+          <label>SEO 摘要（meta description）</label>
+          <textarea id="f-seo" rows="2" placeholder="150 字以內，描述這篇文章的主要內容，幫助搜尋引擎收錄…"></textarea>
+          <p class="hint">建議 120–155 字，不會顯示在文章內，僅用於匯出資料。</p>
+        </div>
+
+        <div class="sdiv"><span>標籤 / 關鍵字</span></div>
+        <div class="field">
+          <label>文章標籤</label>
+          <div class="tag-wrap" id="tag-wrap">
+            <input type="text" id="tag-input" placeholder="輸入後按 Enter 新增標籤…" style="border:none;outline:none;padding:0;font-family:sans-serif;font-size:.84rem;flex:1;min-width:80px">
+          </div>
+          <p class="hint">例：獨旅、學生、美食、親子、自駕、背包客、高山症…</p>
+        </div>
+
+        <div class="sdiv"><span>旅程資料卡（呈現在文章底部）</span></div>
+        <div class="field">
+          <label>旅遊地點（每行一項）</label>
+          <textarea id="f-spots" rows="3" placeholder="築地外圍&#10;淺草寺周邊&#10;澀谷、原宿一帶"></textarea>
+        </div>
+        <div class="g2">
+          <div class="field"><label>美食推薦</label><input type="text" id="f-food" placeholder="壽司、拉麵、炸豬排…"></div>
+          <div class="field"><label>深刻瞬間</label><input type="text" id="f-moment" placeholder="一句話記住這趟旅行…"></div>
+        </div>
+        <div class="g2">
+          <div class="field"><label>住宿區域推薦</label><input type="text" id="f-stayarea" placeholder="新宿、淺草、澀谷…"></div>
+          <div class="field"><label>最佳旅遊月份</label><input type="text" id="f-bestmonth" placeholder="3–4月（賞櫻）、10–11月（楓葉）"></div>
+        </div>
+      </div><!-- /pane-info -->
+
+      <!-- ══ PANE: 實用資訊卡 ══ -->
+      <div id="pane-practical" class="fscroll" style="display:none">
+        <p class="hint" style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:.6rem;padding:.6rem .9rem">這裡的資料會顯示為文章內的「✈️ 旅行資訊一覽」卡片，類似旅遊部落格常見的行前資訊框。</p>
+
+        <div class="sdiv"><span>行程概要</span></div>
+        <div class="g2">
+          <div class="field"><label>出發日期</label><input type="text" id="pi-date" placeholder="2024.02.27"></div>
+          <div class="field"><label>旅遊天數</label><input type="text" id="pi-days" placeholder="5 天 4 夜"></div>
+        </div>
+        <div class="g2">
+          <div class="field"><label>同行人數</label><input type="text" id="pi-people" placeholder="獨旅 / 2人 / 親子 / 閨蜜"></div>
+          <div class="field"><label>旅遊季節</label><input type="text" id="pi-season" placeholder="冬季 / 雨季 / 花季"></div>
+        </div>
+        <div class="g2">
+          <div class="field"><label>最佳旅遊時間</label><input type="text" id="pi-besttime" placeholder="3–5月、9–11月"></div>
+          <div class="field"><label>預算等級</label>
+            <select id="pi-budget">
+              <option value="">— 選擇 —</option>
+              <option>💰 省錢背包</option>
+              <option>💰💰 中等預算</option>
+              <option>💰💰💰 舒適旅遊</option>
+              <option>💰💰💰💰 豪華享受</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="sdiv"><span>費用明細</span></div>
+        <div class="g2">
+          <div class="field"><label>機票（TWD）</label><input type="text" id="pi-flight" placeholder="約 $8,000"></div>
+          <div class="field"><label>住宿（TWD/晚）</label><input type="text" id="pi-hotel" placeholder="約 $1,500/晚"></div>
+        </div>
+        <div class="g2">
+          <div class="field"><label>餐飲花費（TWD/天）</label><input type="text" id="pi-food-cost" placeholder="約 $500/天"></div>
+          <div class="field"><label>交通花費（TWD）</label><input type="text" id="pi-trans-cost" placeholder="約 $1,200"></div>
+        </div>
+        <div class="g2">
+          <div class="field"><label>景點門票（TWD）</label><input type="text" id="pi-ticket" placeholder="約 $800"></div>
+          <div class="field"><label>購物 / 其他（TWD）</label><input type="text" id="pi-local" placeholder="約 $3,000"></div>
+        </div>
+        <div class="field">
+          <label>總花費預估（TWD）</label>
+          <input type="text" id="pi-total" placeholder="約 $25,000（含機票）">
+        </div>
+
+        <div class="sdiv"><span>交通與入境</span></div>
+        <div class="g2">
+          <div class="field"><label>簽證類型</label><input type="text" id="pi-visa" placeholder="免簽 / 落地簽 / 電子簽"></div>
+          <div class="field"><label>簽證費用</label><input type="text" id="pi-visa-fee" placeholder="免費 / TWD 500"></div>
+        </div>
+        <div class="g2">
+          <div class="field"><label>入境機場</label><input type="text" id="pi-airport" placeholder="成田機場、羽田機場"></div>
+          <div class="field"><label>市區交通</label><input type="text" id="pi-transport" placeholder="地鐵、計程車、租車"></div>
+        </div>
+        <div class="g2">
+          <div class="field"><label>貨幣 / 匯率</label><input type="text" id="pi-currency" placeholder="日圓 JPY，1TWD≈4.5JPY"></div>
+          <div class="field"><label>換匯地點</label><input type="text" id="pi-exchange" placeholder="台灣銀行、當地 ATM"></div>
+        </div>
+
+        <div class="sdiv"><span>住宿</span></div>
+        <div class="g2">
+          <div class="field"><label>住宿類型</label>
+            <select id="pi-hoteltype">
+              <option value="">— 選擇 —</option>
+              <option>飯店</option>
+              <option>民宿</option>
+              <option>青旅 / 背包客棧</option>
+              <option>Airbnb</option>
+              <option>膠囊旅館</option>
+              <option>溫泉旅館</option>
+              <option>露營</option>
+            </select>
+          </div>
+          <div class="field"><label>住宿區域</label><input type="text" id="pi-hotelarea" placeholder="新宿、淺草…"></div>
+        </div>
+        <div class="field"><label>推薦住宿</label><input type="text" id="pi-hotelrec" placeholder="東京新宿 XX 飯店，交通方便、早餐好吃"></div>
+
+        <div class="sdiv"><span>網路 / 通訊</span></div>
+        <div class="g2">
+          <div class="field"><label>上網方式</label><input type="text" id="pi-sim" placeholder="eSIM / WiFi 分享器 / 當地 SIM"></div>
+          <div class="field"><label>語言</label><input type="text" id="pi-lang" placeholder="日文為主，觀光區英文可溝通"></div>
+        </div>
+        <div class="g2">
+          <div class="field"><label>時差（與台灣）</label><input type="text" id="pi-timezone" placeholder="+1 小時"></div>
+          <div class="field"><label>電壓 / 插座</label><input type="text" id="pi-plug" placeholder="100V，A型插座（與台灣相同）"></div>
+        </div>
+
+        <div class="sdiv"><span>必備 App / 工具</span></div>
+        <div class="field">
+          <label>推薦 App（每行一項）</label>
+          <textarea id="pi-apps" rows="3" placeholder="Google Maps — 離線導航&#10;Suica — 交通 IC 卡&#10;食べログ — 日本美食評論"></textarea>
+        </div>
+
+        <div class="sdiv"><span>注意事項 / 小提醒</span></div>
+        <div class="field">
+          <label>行前注意（每行一項）</label>
+          <textarea id="pi-tips" rows="3" placeholder="記得帶實體零錢，部分店家不收信用卡&#10;地鐵末班車約 00:30，提早確認&#10;廟宇參拜需脫鞋"></textarea>
+        </div>
+
+        <div class="sdiv"><span>自訂資訊列（選填）</span></div>
+        <div id="extra-rows" style="display:flex;flex-direction:column;gap:.35rem"></div>
+        <button class="add-row-btn" id="btn-add-extra">+ 新增自訂資訊列</button>
+      </div>
+<!-- PANE3_MARKER -->
+
+      <!-- ══ PANE: 每日行程 ══ -->
+      <div id="pane-days" class="fscroll" style="display:none">
+        <p class="hint" style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:.6rem;padding:.6rem .9rem">每天的行程會在預覽中顯示為帶藍線的行程卡。點「+ 新增一天行程」開始建立，可拖曳排序。</p>
+        <div id="days-list" style="display:flex;flex-direction:column;gap:.75rem"></div>
+        <button class="add-row-btn" id="btn-add-day">+ 新增一天行程</button>
+      </div>
+
+      <!-- ══ PANE: 文章內文 ══ -->
+      <div id="pane-content" class="fscroll" style="display:none">
+        <div class="cheat">
+          <strong style="display:block;margin-bottom:.35rem;color:#0c4a6e">Markdown 速查</strong>
+          <table>
+            <tr><td><code>## 大標題</code></td><td>H2 章節</td></tr>
+            <tr><td><code>### 小標題</code></td><td>H3 小節</td></tr>
+            <tr><td><code>- 項目</code></td><td>無序清單</td></tr>
+            <tr><td><code>1. 項目</code></td><td>有序清單</td></tr>
+            <tr><td><code>&gt; !note 標題 | 內文</code></td><td>藍色重點框</td></tr>
+            <tr><td><code>&gt; !warn 標題 | 內文</code></td><td>橘色注意框</td></tr>
+            <tr><td><code>&gt; 引言</code></td><td>引言區塊</td></tr>
+            <tr><td><code>| 標籤 | 說明 |</code></td><td>資訊表格</td></tr>
+            <tr><td><code>**粗體**  *斜體*</code></td><td>行內樣式</td></tr>
+            <tr><td><code>`行內程式碼`</code></td><td>行內碼</td></tr>
+            <tr><td><code>---</code></td><td>分隔線</td></tr>
+          </table>
+        </div>
+        <div class="field">
+          <label>文章內文（Markdown）</label>
+          <div class="md-toolbar">
+            <button class="mdbtn" data-ins="## ">H2</button>
+            <button class="mdbtn" data-ins="### ">H3</button>
+            <button class="mdbtn" data-ins="\n- ">清單</button>
+            <button class="mdbtn" data-ins="\n1. ">編號</button>
+            <button class="mdbtn" data-ins="\n> !note 標題 | 內文">重點框</button>
+            <button class="mdbtn" data-ins="\n> !warn 標題 | 內文">注意框</button>
+            <button class="mdbtn" data-ins="\n> ">引言</button>
+            <button class="mdbtn" data-ins="\n| 標籤 | 說明 |\n| 標籤 | 說明 |">資訊欄</button>
+            <button class="mdbtn" data-ins="**">粗體</button>
+            <button class="mdbtn" data-ins="*">斜體</button>
+            <button class="mdbtn" data-ins="`">行內碼</button>
+            <button class="mdbtn" data-ins="---\n">分隔線</button>
+          </div>
+          <textarea id="md-body" rows="26" placeholder="## 行前準備&#10;&#10;出發前注意事項…&#10;&#10;## 景點推薦&#10;&#10;- **淺草寺**：建議早上 8 點前到&#10;&#10;> !note 小提醒 | 東京地鐵複雜，先下載 Google Maps 離線地圖。&#10;&#10;## 美食推薦&#10;&#10;| 餐廳類型 | 推薦 |&#10;| 早餐 | 築地玉子燒 |&#10;| 晚餐 | 新宿橫丁串燒"></textarea>
+        </div>
+      </div>
+
+      <!-- ══ PANE: 匯出 ══ -->
+      <div id="pane-export" class="fscroll" style="display:none">
+        <div style="background:#ecfdf5;border:1px solid #6ee7b7;border-radius:.75rem;padding:.9rem 1rem;font-family:sans-serif;font-size:.74rem;color:#065f46;line-height:1.75">
+          <strong>開發者用：</strong>複製 JSON 程式碼，打開 <code style="background:#d1fae5;padding:.03rem .28rem;border-radius:.2rem">trip-detail-data.js</code>，在最後一筆結尾加逗號後貼上，存檔即可。
+        </div>
+        <div style="display:flex;gap:.5rem;margin:.5rem 0;flex-wrap:wrap">
+          <button class="btnp" id="btn-copy">複製程式碼</button>
+          <button class="btns" id="btn-dl">下載 .json</button>
+        </div>
+        <pre id="export-code">// 先填好資料並點「更新預覽」</pre>
+
+        <div style="margin-top:1.25rem;border-top:1px solid var(--bd);padding-top:1rem">
+          <div style="background:#fefce8;border:1px solid #fde68a;border-radius:.75rem;padding:.9rem 1rem;font-family:sans-serif;font-size:.74rem;color:#78350f;line-height:1.75;margin-bottom:.75rem">
+            <strong>📦 旅遊懶人包：</strong>萃取旅行資訊一覽、每日行程、行前注意與旅程小結，產生一份可分享給旅伴或讀者的純文字檔。
+          </div>
+          <div style="display:flex;gap:.5rem;margin-bottom:.75rem;flex-wrap:wrap">
+            <button class="btnp" id="btn-lazypack" style="background:#d97706">📦 下載旅遊懶人包 .txt</button>
+            <button class="btns" id="btn-lazypack-md">下載 .md 格式</button>
+          </div>
+          <pre id="lazypack-preview" style="font-family:monospace;font-size:.7rem;line-height:1.7;background:#fffbeb;color:#78350f;border:1px solid #fde68a;padding:1rem;border-radius:.75rem;overflow-x:auto;max-height:40vh;overflow-y:auto;white-space:pre">// 點「更新預覽 &amp; 匯出」後自動產生懶人包預覽</pre>
+        </div>
+      </div>
+
+      <div class="abar">
+        <button class="btnp" id="btn-update">更新預覽 &amp; 匯出</button>
+        <button class="btns" id="btn-clear">清除</button>
+        <span class="smsg" id="smsg"></span>
+      </div>
+    </div><!-- /ecol -->
+
+    <!-- RIGHT PREVIEW -->
+    <div class="pcol" id="pcol">
+      <div class="phdr"><span class="ldot"></span><h2>即時預覽</h2></div>
+      <div id="preview-frame">
+        <div class="ap" id="art-preview">
+          <p style="font-family:sans-serif;font-size:.8rem;color:#94a3b8;text-align:center;padding:3rem 0">填寫左側資料並點「更新預覽」後，文章預覽將顯示在此。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="trips-data.js"></script>
+<!-- SCRIPT_MARKER -->
+  <script>
+  (function(){
+    'use strict';
+    var tags=[],days=[],extraRows=[];
+    // trip select
+    var sel=document.getElementById('trip-select');
+    if(typeof TRIPS_DATA!=='undefined'){TRIPS_DATA.forEach(function(t){var o=document.createElement('option');o.value=t.id;o.textContent=t.name+' ('+t.year+')';sel.appendChild(o);});}
+    sel.addEventListener('change',function(){if(!sel.value)return;document.getElementById('f-id').value=sel.value;var t=typeof TRIPS_DATA!=='undefined'&&TRIPS_DATA.find(function(x){return x.id===sel.value;});if(t&&!document.getElementById('f-cover').value)document.getElementById('f-cover').value=t.image||'';});
+    // tabs
+    var paneIds=['info','practical','days','content','export'];
+    document.querySelectorAll('.tbtn').forEach(function(btn){btn.addEventListener('click',function(){var tab=btn.getAttribute('data-tab');document.querySelectorAll('.tbtn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');paneIds.forEach(function(k){var p=document.getElementById('pane-'+k);if(p)p.style.display=k===tab?'flex':'none';});if(tab==='export')renderExport();});});
+    // mobile
+    var mobTog=document.getElementById('mob-tog'),ecol=document.getElementById('ecol'),pcol=document.getElementById('pcol'),showPrev=false;
+    mobTog.addEventListener('click',function(){showPrev=!showPrev;ecol.classList.toggle('mh',showPrev);pcol.classList.toggle('ms',showPrev);mobTog.textContent=showPrev?'✏️ 編輯':'👁 預覽';if(showPrev)renderPreview();});
+    // tags
+    var tagInput=document.getElementById('tag-input'),tagWrap=document.getElementById('tag-wrap');
+    function renderTags(){tagWrap.querySelectorAll('.tag-item').forEach(function(i){i.remove();});tags.forEach(function(t,i){var s=document.createElement('span');s.className='tag-item';s.innerHTML=esc(t)+'<button onclick="window._rmTag('+i+')">×</button>';tagWrap.insertBefore(s,tagInput);});}
+    window._rmTag=function(i){tags.splice(i,1);renderTags();};
+    tagInput.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===',')&&tagInput.value.trim()){e.preventDefault();tags.push(tagInput.value.trim().replace(/,$/,''));tagInput.value='';renderTags();}});
+    tagWrap.addEventListener('click',function(){tagInput.focus();});
+    // extra rows
+    document.getElementById('btn-add-extra').addEventListener('click',function(){extraRows.push({label:'',value:''});renderExtraRows();});
+    function renderExtraRows(){var c=document.getElementById('extra-rows');c.innerHTML='';extraRows.forEach(function(r,i){var d=document.createElement('div');d.className='info-row';d.innerHTML='<input type="text" placeholder="標籤" value="'+esc(r.label)+'" oninput="window._xr['+i+'].label=this.value"><input type="text" placeholder="說明" value="'+esc(r.value)+'" oninput="window._xr['+i+'].value=this.value"><button class="del-btn" onclick="window._xr.splice('+i+',1);renderExtraRows()">×</button>';c.appendChild(d);});}
+    window._xr=extraRows;
+    // days
+    document.getElementById('btn-add-day').addEventListener('click',function(){days.push({title:'',spots:'',food:'',note:''});renderDays();});
+    function renderDays(){var c=document.getElementById('days-list');c.innerHTML='';days.forEach(function(d,i){var card=document.createElement('div');card.className='day-card';card.innerHTML='<div class="day-card-header"><span class="day-label">Day '+(i+1)+'</span><button class="del-btn" onclick="window._days.splice('+i+',1);renderDays()">× 刪除</button></div><div style="display:flex;flex-direction:column;gap:.5rem"><div class="field"><label>當天標題 <span class="req">*</span></label><input type="text" placeholder="抵達東京 · 淺草寺漫步" value="'+esc(d.title)+'" oninput="window._days['+i+'].title=this.value"></div><div class="field"><label>當天日期</label><input type="text" placeholder="2024.03.01" value="'+esc(d.date||'')+'" oninput="window._days['+i+'].date=this.value"></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem"><div class="field"><label>住宿地點</label><input type="text" placeholder="新宿 XX 飯店" value="'+esc(d.stay||'')+'" oninput="window._days['+i+'].stay=this.value"></div><div class="field"><label>交通方式</label><input type="text" placeholder="地鐵、巴士、步行" value="'+esc(d.transit||'')+'" oninput="window._days['+i+'].transit=this.value"></div></div><div class="field"><label>景點（每行一項）</label><textarea rows="3" placeholder="淺草寺\n仲見世通\n上野恩賜公園" oninput="window._days['+i+'].spots=this.value">'+esc(d.spots)+'</textarea></div><div class="field"><label>行程描述</label><textarea rows="3" placeholder="描述當天的旅遊體驗、氛圍、感受…" oninput="window._days['+i+'].desc=this.value">'+esc(d.desc||'')+'</textarea></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem"><div class="field"><label>今日美食</label><input type="text" placeholder="海鮮丼、拉麵" value="'+esc(d.food)+'" oninput="window._days['+i+'].food=this.value"></div><div class="field"><label>當日花費（TWD）</label><input type="text" placeholder="約 $1,500" value="'+esc(d.cost||'')+'" oninput="window._days['+i+'].cost=this.value"></div><div class="field"><label>小備註 / 提醒</label><input type="text" placeholder="注意事項" value="'+esc(d.note)+'" oninput="window._days['+i+'].note=this.value"></div></div><div class="field"><label>當天圖片 URL（選填）</label><input type="text" placeholder="https://..." value="'+esc(d.img||'')+'" oninput="window._days['+i+'].img=this.value"></div></div>';c.appendChild(card);});}
+    window._days=days;
+    // md toolbar
+    document.querySelectorAll('.mdbtn').forEach(function(btn){btn.addEventListener('click',function(){var ta=document.getElementById('md-body');var ins=btn.getAttribute('data-ins').replace(/\\n/g,'\n');var s=ta.selectionStart,e=ta.selectionEnd,sv=ta.value.substring(s,e);var rep;if(ins==='**'||ins==='*'||ins==='`'){rep=ins+sv+ins;}else{rep=ins+(sv||'');}ta.value=ta.value.substring(0,s)+rep+ta.value.substring(e);ta.focus();ta.selectionStart=ta.selectionEnd=s+rep.length;});});
+    function esc(s){if(!s)return'';var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+    function inline(s){return s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`(.+?)`/g,'<code>$1</code>');}
+<!-- JS2_MARKER -->
+    // helpers
+    function gv(id){var el=document.getElementById(id);return el?el.value.trim():'';}
+    function parseMd(md){
+      var lines=md.split('\n'),out='',i=0;
+      while(i<lines.length){
+        var l=lines[i];
+        if(/^## /.test(l)){out+='<h2>'+inline(l.slice(3))+'</h2>';i++;continue;}
+        if(/^### /.test(l)){out+='<h3>'+inline(l.slice(4))+'</h3>';i++;continue;}
+        if(/^---$/.test(l.trim())){out+='<hr>';i++;continue;}
+        if(/^> !note /.test(l)){var p=l.slice(8).split('|');out+='<div class="csky"><div class="ctitle">'+(p[0]||'').trim()+'</div><p>'+inline((p[1]||'').trim())+'</p></div>';i++;continue;}
+        if(/^> !warn /.test(l)){var p=l.slice(8).split('|');out+='<div class="camb"><div class="ctitle">'+(p[0]||'').trim()+'</div><p>'+inline((p[1]||'').trim())+'</p></div>';i++;continue;}
+        if(/^> /.test(l)){out+='<blockquote>'+inline(l.slice(2))+'</blockquote>';i++;continue;}
+        if(/^\| /.test(l)){
+          var rows=[];
+          while(i<lines.length&&/^\| /.test(lines[i])){rows.push(lines[i]);i++;}
+          out+='<div class="ibox"><table>';
+          rows.forEach(function(r){var cells=r.split('|').filter(function(c){return c.trim()!=='';});out+='<tr><td>'+cells.map(function(c){return inline(c.trim());}).join('</td><td>')+'</td></tr>';});
+          out+='</table></div>';continue;
+        }
+        if(/^- /.test(l)){
+          out+='<ul>';
+          while(i<lines.length&&/^- /.test(lines[i])){out+='<li>'+inline(lines[i].slice(2))+'</li>';i++;}
+          out+='</ul>';continue;
+        }
+        if(/^\d+\. /.test(l)){
+          out+='<ol>';
+          while(i<lines.length&&/^\d+\. /.test(lines[i])){out+='<li>'+inline(lines[i].replace(/^\d+\. /,''))+'</li>';i++;}
+          out+='</ol>';continue;
+        }
+        if(l.trim()===''){out+='';i++;continue;}
+        out+='<p>'+inline(l)+'</p>';i++;
+      }
+      return out;
+    }
+    function buildInfoRows(){
+      var rows=[];
+      function add(label,val){if(val)rows.push({label:label,value:val});}
+      add('出發日期',gv('pi-date')); add('旅遊天數',gv('pi-days')); add('同行人數',gv('pi-people')); add('旅遊季節',gv('pi-season'));
+      add('最佳旅遊時間',gv('pi-besttime')); add('預算等級',gv('pi-budget'));
+      add('機票',gv('pi-flight')); add('住宿/晚',gv('pi-hotel')); add('餐飲/天',gv('pi-food-cost')); add('交通',gv('pi-trans-cost'));
+      add('門票費用',gv('pi-ticket')); add('購物/其他',gv('pi-local')); add('總花費預估',gv('pi-total'));
+      add('簽證',gv('pi-visa')); add('簽證費用',gv('pi-visa-fee')); add('入境機場',gv('pi-airport')); add('市區交通',gv('pi-transport'));
+      add('貨幣/匯率',gv('pi-currency')); add('換匯地點',gv('pi-exchange'));
+      add('住宿類型',gv('pi-hoteltype')); add('住宿區域',gv('pi-hotelarea')); add('推薦住宿',gv('pi-hotelrec'));
+      add('上網方式',gv('pi-sim')); add('語言',gv('pi-lang')); add('時差',gv('pi-timezone')); add('電壓/插座',gv('pi-plug'));
+      var apps=gv('pi-apps');if(apps)add('推薦 App',apps.split('\n').join('、'));
+      var tips=gv('pi-tips');if(tips)add('行前提醒',tips.split('\n').join(' / '));
+      extraRows.forEach(function(r){if(r.label)add(r.label,r.value);});
+      return rows;
+    }
+    function renderPreview(){
+      var title=gv('f-title')||'（未填標題）';
+      var subtitle=gv('f-subtitle'); var eyebrow=gv('f-eyebrow');
+      var cover=gv('f-cover'); var coverAlt=gv('f-cover-alt')||title;
+      var lead=gv('f-lead'); var body=gv('md-body');
+      var author=gv('f-author')||'Jiuan';
+      var pubdate=gv('f-pubdate'); var readtime=gv('f-readtime');
+      var country=gv('f-country'); var city=gv('f-city');
+      var triptype=gv('f-triptype'); var rating=gv('f-rating');
+      var spots=gv('f-spots'); var food=gv('f-food'); var moment=gv('f-moment');
+      var stayarea=gv('f-stayarea'); var bestmonth=gv('f-bestmonth');
+      var infoRows=buildInfoRows();
+      var html='';
+      // cover
+      html+='<div class="cover">'+(cover?'<img src="'+esc(cover)+'" alt="'+esc(coverAlt)+'">':'<div class="cover-ph"><span>🏔</span><span>封面圖片</span></div>')+'</div>';
+      // eyebrow + title
+      if(eyebrow)html+='<div class="art-cat">'+esc(eyebrow)+'</div>';
+      html+='<h1 class="art-title">'+esc(title)+'</h1>';
+      if(subtitle)html+='<div class="art-sub">'+esc(subtitle)+'</div>';
+      // meta bar
+      html+='<div class="art-meta">';
+      html+='<span>✍️ '+esc(author)+'</span>';
+      if(pubdate)html+='<span>📅 '+esc(pubdate)+'</span>';
+      if(readtime)html+='<span>⏱ '+esc(readtime)+' 分鐘閱讀</span>';
+      if(country||city)html+='<span>📍 '+esc([country,city].filter(Boolean).join('・'))+'</span>';
+      if(triptype)html+='<span>🎒 '+esc(triptype)+'</span>';
+      if(rating)html+='<span>'+esc(rating)+'</span>';
+      html+='</div>';
+      // tags
+      if(tags.length){html+='<div class="art-tags">';tags.forEach(function(t){html+='<span class="art-tag">#'+esc(t)+'</span>';});html+='</div>';}
+      // lead
+      if(lead)html+='<div class="art-lead">'+esc(lead)+'</div>';
+      // info card
+      if(infoRows.length){
+        html+='<div class="info-card"><div class="info-card-title">✈️ 旅行資訊一覽</div><table>';
+        infoRows.forEach(function(r){html+='<tr><td>'+esc(r.label)+'</td><td>'+esc(r.value)+'</td></tr>';});
+        html+='</table></div>';
+      }
+      // days
+      if(days.length){
+        html+='<h2 class="ab" style="font-size:1.1rem;font-weight:800;color:#0f172a;margin:1.5rem 0 .75rem;border-bottom:2px solid #e0f2fe;padding-bottom:.3rem">📅 每日行程</h2>';
+        days.forEach(function(d,i){
+          html+='<div class="day-section">';
+          html+='<h3>Day '+(i+1)+(d.title?' · '+esc(d.title):'')+(d.date?' <span style="font-weight:400;color:#94a3b8;font-size:.65rem">'+esc(d.date)+'</span>':'')+'</h3>';
+          if(d.desc)html+='<p>'+esc(d.desc)+'</p>';
+          if(d.spots){var sp=d.spots.split('\n').filter(Boolean);if(sp.length){html+='<p><strong>景點：</strong>'+sp.map(function(s){return esc(s);}).join(' → ')+'</p>';}}
+          var meta=[];
+          if(d.food)meta.push('🍜 '+esc(d.food));
+          if(d.transit)meta.push('🚃 '+esc(d.transit));
+          if(d.stay)meta.push('🏨 '+esc(d.stay));
+          if(d.cost)meta.push('💴 '+esc(d.cost));
+          if(meta.length)html+='<p style="font-size:.8rem;color:#64748b">'+meta.join('　')+'</p>';
+          if(d.note)html+='<p style="font-size:.78rem;color:#f59e0b">⚠️ '+esc(d.note)+'</p>';
+          if(d.img)html+='<img src="'+esc(d.img)+'" alt="Day '+(i+1)+'" style="width:100%;border-radius:.6rem;margin-top:.5rem;object-fit:cover;max-height:220px">';
+          html+='</div>';
+        });
+      }
+      // body
+      if(body)html+='<div class="ab">'+parseMd(body)+'</div>';
+      // bottom card
+      var btm=[];
+      if(spots){var sl=spots.split('\n').filter(Boolean);if(sl.length)btm.push({k:'旅遊地點',v:sl.join('、')});}
+      if(food)btm.push({k:'美食推薦',v:food});
+      if(moment)btm.push({k:'深刻瞬間',v:moment});
+      if(stayarea)btm.push({k:'住宿區域',v:stayarea});
+      if(bestmonth)btm.push({k:'最佳月份',v:bestmonth});
+      if(btm.length){
+        html+='<div class="info-card" style="margin-top:2rem"><div class="info-card-title">🗺 旅程小結</div><table>';
+        btm.forEach(function(r){html+='<tr><td>'+esc(r.k)+'</td><td>'+esc(r.v)+'</td></tr>';});
+        html+='</table></div>';
+      }
+      document.getElementById('art-preview').innerHTML=html;
+    }
+    function renderExport(){
+      var obj={
+        id:gv('f-id'),title:gv('f-title'),subtitle:gv('f-subtitle'),
+        eyebrow:gv('f-eyebrow'),country:gv('f-country'),city:gv('f-city'),
+        tripType:gv('f-triptype'),author:gv('f-author'),pubDate:gv('f-pubdate'),
+        readTime:gv('f-readtime'),rating:gv('f-rating'),
+        cover:gv('f-cover'),coverAlt:gv('f-cover-alt'),
+        lead:gv('f-lead'),seo:gv('f-seo'),
+        tags:tags.slice(),
+        spots:gv('f-spots').split('\n').filter(Boolean),
+        food:gv('f-food'),moment:gv('f-moment'),
+        stayArea:gv('f-stayarea'),bestMonth:gv('f-bestmonth'),
+        practical:{
+          date:gv('pi-date'),days:gv('pi-days'),people:gv('pi-people'),season:gv('pi-season'),
+          bestTime:gv('pi-besttime'),budgetLevel:gv('pi-budget'),
+          flight:gv('pi-flight'),hotel:gv('pi-hotel'),foodCost:gv('pi-food-cost'),
+          transCost:gv('pi-trans-cost'),ticket:gv('pi-ticket'),other:gv('pi-local'),total:gv('pi-total'),
+          visa:gv('pi-visa'),visaFee:gv('pi-visa-fee'),airport:gv('pi-airport'),transport:gv('pi-transport'),
+          currency:gv('pi-currency'),exchange:gv('pi-exchange'),
+          hotelType:gv('pi-hoteltype'),hotelArea:gv('pi-hotelarea'),hotelRec:gv('pi-hotelrec'),
+          sim:gv('pi-sim'),lang:gv('pi-lang'),timezone:gv('pi-timezone'),plug:gv('pi-plug'),
+          apps:gv('pi-apps').split('\n').filter(Boolean),
+          tips:gv('pi-tips').split('\n').filter(Boolean),
+          extra:extraRows.filter(function(r){return r.label;})
+        },
+        days:days.map(function(d){return{title:d.title,date:d.date||'',stay:d.stay||'',transit:d.transit||'',spots:d.spots.split('\n').filter(Boolean),desc:d.desc||'',food:d.food,cost:d.cost||'',note:d.note,img:d.img||''};}).filter(function(d){return d.title;}),
+        body:gv('md-body')
+      };
+      document.getElementById('export-code').textContent=JSON.stringify(obj,null,2);
+    }
+    // update button
+    document.getElementById('btn-update').addEventListener('click',function(){renderPreview();renderExport();var lp=buildLazyPack('txt');document.getElementById('lazypack-preview').textContent=lp;var m=document.getElementById('smsg');m.textContent='已更新！';m.classList.add('show');setTimeout(function(){m.classList.remove('show');},2200);});
+    // clear button
+    document.getElementById('btn-clear').addEventListener('click',function(){if(!confirm('確定清除所有欄位？'))return;document.querySelectorAll('input[type=text],input[type=url],input[type=number],textarea,select').forEach(function(el){el.value='';});tags.length=0;days.length=0;extraRows.length=0;renderTags();renderDays();renderExtraRows();document.getElementById('art-preview').innerHTML='<p style="font-family:sans-serif;font-size:.8rem;color:#94a3b8;text-align:center;padding:3rem 0">填寫左側資料並點「更新預覽」後，文章預覽將顯示在此。</p>';document.getElementById('export-code').textContent='// 先填好資料並點「更新預覽」';});
+    // copy button
+    document.getElementById('btn-copy').addEventListener('click',function(){var code=document.getElementById('export-code').textContent;navigator.clipboard.writeText(code).then(function(){var b=document.getElementById('btn-copy');b.textContent='✅ 已複製';setTimeout(function(){b.textContent='複製程式碼';},2000);});});
+    // download json button
+    document.getElementById('btn-dl').addEventListener('click',function(){var code=document.getElementById('export-code').textContent;if(code.startsWith('//'))return alert('請先點「更新預覽 & 匯出」');var blob=new Blob([code],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(gv('f-id')||'post')+'.json';a.click();});
+    // lazy pack builder
+    function buildLazyPack(fmt){
+      var sep=fmt==='md'?'---':'════════════════════════════════';
+      var h1=fmt==='md'?'# ':'▌ ';
+      var h2=fmt==='md'?'## ':'◆ ';
+      var h3=fmt==='md'?'### ':'• ';
+      var li=fmt==='md'?'- ':'  · ';
+      var lines=[];
+      function ln(s){lines.push(s===undefined?'':s);}
+      // header
+      ln(h1+(gv('f-title')||'（未填標題）'));
+      if(gv('f-subtitle'))ln((fmt==='md'?'> ':'')+gv('f-subtitle'));
+      ln('');
+      var meta=[];
+      if(gv('f-country')||gv('f-city'))meta.push('📍 '+(gv('f-country')+' '+gv('f-city')).trim());
+      if(gv('f-triptype'))meta.push('🎒 '+gv('f-triptype'));
+      if(gv('pi-days'))meta.push('🗓 '+gv('pi-days'));
+      if(gv('f-pubdate'))meta.push('📅 '+gv('f-pubdate'));
+      if(gv('f-rating'))meta.push(gv('f-rating'));
+      if(meta.length)ln(meta.join('　'));
+      if(tags.length)ln('🏷 '+tags.map(function(t){return'#'+t;}).join(' '));
+      ln('');
+      if(gv('f-lead')){ln(fmt==='md'?'> '+gv('f-lead'):gv('f-lead'));ln('');}
+      ln(sep);
+      // practical info card
+      var infoRows=buildInfoRows();
+      if(infoRows.length){
+        ln('');
+        ln(h2+'✈️ 旅行資訊一覽');
+        ln('');
+        infoRows.forEach(function(r){
+          if(r.label==='推薦 App'||r.label==='行前提醒')return;
+          ln(fmt==='md'?'| '+r.label+' | '+r.value+' |':
+            '  '+r.label.padEnd(12,'　')+r.value);
+        });
+        if(fmt==='md'){ln('');}
+      }
+      ln('');
+      ln(sep);
+      // tips & apps
+      var tips=gv('pi-tips');var apps=gv('pi-apps');
+      if(tips||apps){
+        ln('');
+        ln(h2+'📋 行前注意事項');
+        ln('');
+        if(tips)tips.split('\n').filter(Boolean).forEach(function(t){ln(li+t);});
+        if(apps){
+          ln('');
+          ln(h3+'推薦 App');
+          apps.split('\n').filter(Boolean).forEach(function(a){ln(li+a);});
+        }
+        ln('');
+        ln(sep);
+      }
+      // days
+      if(days.length){
+        ln('');
+        ln(h2+'📅 每日行程');
+        days.forEach(function(d,i){
+          ln('');
+          var dayhead='Day '+(i+1)+(d.title?' · '+d.title:'')+(d.date?' ('+d.date+')':'');
+          ln(h3+dayhead);
+          if(d.desc)ln(d.desc);
+          if(d.spots){
+            var sp=d.spots.split('\n').filter(Boolean);
+            if(sp.length)ln('🗺 景點：'+sp.join(' → '));
+          }
+          if(d.food)ln('🍜 美食：'+d.food);
+          if(d.transit)ln('🚃 交通：'+d.transit);
+          if(d.stay)ln('🏨 住宿：'+d.stay);
+          if(d.cost)ln('💴 花費：'+d.cost);
+          if(d.note)ln('⚠️  提醒：'+d.note);
+        });
+        ln('');
+        ln(sep);
+      }
+      // summary card
+      var food=gv('f-food'),moment=gv('f-moment'),stayarea=gv('f-stayarea'),bestmonth=gv('f-bestmonth'),spots=gv('f-spots');
+      var hasSummary=food||moment||stayarea||bestmonth||spots;
+      if(hasSummary){
+        ln('');
+        ln(h2+'🗺 旅程小結');
+        ln('');
+        if(spots){
+          var sl=spots.split('\n').filter(Boolean);
+          if(sl.length)ln('📌 旅遊地點：'+sl.join('、'));
+        }
+        if(food)ln('🍜 美食推薦：'+food);
+        if(stayarea)ln('🏨 住宿區域：'+stayarea);
+        if(bestmonth)ln('📆 最佳月份：'+bestmonth);
+        if(moment)ln('💬 深刻瞬間：「'+moment+'」');
+        ln('');
+        ln(sep);
+      }
+      // footer
+      ln('');
+      ln('本懶人包由 Jiuan\'s Travel 旅遊編輯器自動產生');
+      if(gv('f-pubdate'))ln('發佈日期：'+gv('f-pubdate'));
+      return lines.join('\n');
+    }
+    function downloadLazyPack(fmt){
+      var title=gv('f-title');
+      if(!title)return alert('請先填寫文章標題並點「更新預覽 & 匯出」');
+      var content=buildLazyPack(fmt);
+      var ext=fmt==='md'?'.md':'.txt';
+      var blob=new Blob([content],{type:'text/plain;charset=utf-8'});
+      var a=document.createElement('a');a.href=URL.createObjectURL(blob);
+      a.download=((gv('f-id')||'post')+'-懶人包'+ext);a.click();
+    }
+    document.getElementById('btn-lazypack').addEventListener('click',function(){downloadLazyPack('txt');});
+    document.getElementById('btn-lazypack-md').addEventListener('click',function(){downloadLazyPack('md');});
+  })();
+  </script>
+</body>
+</html>
