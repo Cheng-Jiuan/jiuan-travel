@@ -11,3 +11,7 @@ notion_export/
 journeys-tail.tmp
 *.zip
 *.code-workspace
+scripts/
+excel-template.html
+post-editor.html
+trip-editor.html
