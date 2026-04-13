@@ -6,7 +6,7 @@ __pycache__/
 .DS_Store
 .vscode/
 .cursor/
-data/
+/data/
 notion_export/
 journeys-tail.tmp
 *.zip
@@ -15,3 +15,4 @@ scripts/
 excel-template.html
 post-editor.html
 trip-editor.html
+網站操作sop.md
