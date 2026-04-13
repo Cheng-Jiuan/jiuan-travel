@@ -56,10 +56,10 @@ function renderTripCardHTML(t) {
 
 var TRIPS_DATA = [
   {
-    "id": "錯過雅馬遜雨林飛機",
-    "name": "錯過雅馬遜雨林飛機",
-    "summary": "test",
-    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200",
+    "id": "縝密計畫的崩塌：當高山症遇上錯過的亞馬遜飛機",
+    "name": "縝密計畫的崩塌：當高山症遇上錯過的亞馬遜飛機",
+    "summary": "那些錯過的事，帶走了我對「掌控」的執著。",
+    "image": "local: assets/trip-images/錯過雅馬遜雨林飛機/00.jpg",
     "href": "#",
     "tag": "南美洲",
     "regions": [
@@ -69,10 +69,11 @@ var TRIPS_DATA = [
       "波利維亞"
     ],
     "cities": [
-      "拉巴斯"
+      "Rurrenabaque",
+      "La Paz"
     ],
     "year": 2026,
-    "days": 9,
+    "days": 5,
     "start": "2026-02-01",
     "end": "",
     "status": "已發佈",
