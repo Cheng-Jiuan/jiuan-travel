@@ -56,8 +56,8 @@ function renderTripCardHTML(t) {
 
 var TRIPS_DATA = [
   {
-    "id": "縝密計畫的崩塌：當高山症遇上錯過的亞馬遜飛機",
-    "name": "縝密計畫的崩塌：當高山症遇上錯過的亞馬遜飛機",
+    "id": "亞馬遜雨林：大自然動物交響曲",
+    "name": "亞馬遜雨林：大自然動物交響曲",
     "summary": "那些錯過的事，帶走了我對「掌控」的執著。",
     "image": "local: assets/trip-images/錯過雅馬遜雨林飛機/00.jpg",
     "href": "#",

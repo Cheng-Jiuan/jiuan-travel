@@ -1,4 +1,30 @@
+function validateTripData() {
+  if (typeof TRIPS_DATA === 'undefined' || typeof TRIP_DETAILS === 'undefined') return;
+
+  var tripIds = (TRIPS_DATA || []).map(function (trip) {
+    return trip && trip.id;
+  }).filter(Boolean);
+
+  var detailIds = Object.keys(TRIP_DETAILS || {});
+
+  var missingDetails = tripIds.filter(function (id) {
+    return detailIds.indexOf(id) === -1;
+  });
+
+  var orphanDetails = detailIds.filter(function (id) {
+    return tripIds.indexOf(id) === -1;
+  });
+
+  if (missingDetails.length || orphanDetails.length) {
+    console.warn('[trip-data] 資料索引不一致', {
+      missingDetails: missingDetails,
+      orphanDetails: orphanDetails
+    });
+  }
+}
+
 (function () {
+  validateTripData();
   renderSiteHeader(document.getElementById('site-header'), 'trip');
   renderSiteFooter(document.getElementById('site-footer'), 'trip');
 
