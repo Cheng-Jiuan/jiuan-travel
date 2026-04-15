@@ -2,7 +2,7 @@ function validateTripData() {
   if (typeof TRIPS_DATA === 'undefined' || typeof TRIP_DETAILS === 'undefined') return;
 
   var tripIds = (TRIPS_DATA || []).map(function (trip) {
-    return trip && trip.id;
+    return tripIdentity(trip);
   }).filter(Boolean);
 
   var detailIds = Object.keys(TRIP_DETAILS || {});
@@ -29,16 +29,16 @@ function validateTripData() {
   renderSiteFooter(document.getElementById('site-footer'), 'trip');
 
   var params = new URLSearchParams(window.location.search);
-  var id = params.get('id');
+  var slug = params.get('slug');
   var root = document.getElementById('trip-root');
 
-  if (!id || typeof TRIPS_DATA === 'undefined') {
+  if (!slug || typeof TRIPS_DATA === 'undefined') {
     root.innerHTML = '<div class="max-w-3xl mx-auto px-4 py-16 text-center text-gray-500">找不到旅程。請從<a href="journeys.html" class="text-sky-600 underline">全部旅程</a>進入。</div>';
     document.title = '找不到旅程 - Jiuan\'s Travel';
     return;
   }
 
-  var trip = findTripById(getPublishedTrips(TRIPS_DATA), id);
+  var trip = findTripBySlug(getPublishedTrips(TRIPS_DATA), slug);
   if (!trip) {
     root.innerHTML = '<div class="max-w-3xl mx-auto px-4 py-16 text-center text-gray-500">找不到此趟旅程。</div>';
     return;
@@ -46,7 +46,8 @@ function validateTripData() {
 
   document.title = trip.name + ' - Jiuan\'s Travel';
 
-  var detail = (typeof TRIP_DETAILS !== 'undefined' && TRIP_DETAILS[id]) ? TRIP_DETAILS[id] : null;
+  var detailKey = tripIdentity(trip);
+  var detail = (typeof TRIP_DETAILS !== 'undefined' && TRIP_DETAILS[detailKey]) ? TRIP_DETAILS[detailKey] : null;
   var guide = detail && detail.guide ? detail.guide : null;
   var hasGuide = !!(guide && guide.sections && guide.sections.length);
   var hasCountries = !!(detail && detail.countries && detail.countries.length);

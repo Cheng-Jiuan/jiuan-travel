@@ -82,7 +82,7 @@
     });
     var popup = '<div style="font-family:ui-sans-serif,sans-serif;min-width:140px"><p style="font-size:11px;font-weight:800;color:#0369a1;margin:0 0 5px">' + name + '</p>';
     trips.forEach(function (trip) {
-      popup += '<a href="trip.html?id=' + encodeURIComponent(trip.id) + '" style="display:block;font-size:12px;font-weight:600;color:#0f172a;padding:2px 0;border-bottom:1px solid #f1f5f9;text-decoration:none">' + trip.name + '</a>';
+      popup += '<a href="' + tripDetailUrl(trip) + '" style="display:block;font-size:12px;font-weight:600;color:#0f172a;padding:2px 0;border-bottom:1px solid #f1f5f9;text-decoration:none">' + trip.name + '</a>';
     });
     popup += '</div>';
     marker.bindPopup(popup, { maxWidth: 220 });

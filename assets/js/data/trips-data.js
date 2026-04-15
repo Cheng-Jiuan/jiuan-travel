@@ -22,7 +22,7 @@ function tripDetailUrl(t) {
 
   if (t.href && t.href !== '#' && t.href.indexOf('trip.html') !== 0) return t.href;
 
-  return 'trip.html?id=' + encodeURIComponent(t.id);
+  return 'trip.html?slug=' + encodeURIComponent(t.slug);
 
 }
 
@@ -56,7 +56,7 @@ function renderTripCardHTML(t) {
 
 var TRIPS_DATA = [
   {
-    "id": "亞馬遜雨林：大自然動物交響曲",
+    "slug": "amazon-rainforest",
     "name": "亞馬遜雨林：大自然動物交響曲",
     "summary": "那些錯過的事，帶走了我對「掌控」的執著。",
     "image": "local: assets/trip-images/錯過雅馬遜雨林飛機/00.jpg",
@@ -80,26 +80,9 @@ var TRIPS_DATA = [
     "featured": false
   },
   {
-    "id": "測測",
-    "name": "測測",
-    "summary": "測",
-    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200",
-    "href": "#",
-    "tag": "",
-    "regions": [],
-    "countries": [],
-    "cities": [],
-    "year": 2025,
-    "days": 2,
-    "start": "2025-04-11",
-    "end": "",
-    "status": "草稿",
-    "featured": false
-  },
-  {
-    "id": "探險之旅",
-    "name": "探險之旅",
-    "summary": "正反兩極的城市",
+    "slug": "thailand-cambodia-travel",
+    "name": "歷史交織的國度：泰國、柬埔寨",
+    "summary": "走訪泰國與柬埔寨，感受現代都市與千年遺蹟的強烈對比。從大小吳哥的千年文化，看見高棉王朝昔日的輝煌巔峰；也看見了紅色高棉後重生與掙扎的強烈對比。",
     "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200",
     "href": "#",
     "tag": "東南亞",

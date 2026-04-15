@@ -1,6 +1,11 @@
+function tripIdentity(trip) {
+  if (!trip) return '';
+  return trip.slug || '';
+}
+
 function tripDetailUrl(trip) {
   if (trip && trip.href && trip.href !== '#' && trip.href.indexOf('trip.html') !== 0) return trip.href;
-  return 'trip.html?id=' + encodeURIComponent(trip.id);
+  return 'trip.html?slug=' + encodeURIComponent(tripIdentity(trip));
 }
 
 function getPublishedTrips(list) {
@@ -9,9 +14,9 @@ function getPublishedTrips(list) {
   });
 }
 
-function findTripById(list, id) {
+function findTripBySlug(list, slug) {
   return (list || []).filter(function (trip) {
-    return trip && trip.id === id;
+    return trip && tripIdentity(trip) === slug;
   })[0] || null;
 }
 
