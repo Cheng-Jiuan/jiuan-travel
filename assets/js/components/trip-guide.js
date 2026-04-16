@@ -32,6 +32,26 @@ function renderTripGuideBlocks(sections) {
         out += '<span class="text-gray-600 leading-relaxed">' + richText(row.value) + '</span></div>';
       });
       out += '</div>';
+    } else if (block.type === 'table' && block.rows && block.rows.length) {
+      out += '<div class="my-6 overflow-hidden rounded-[1.4rem] border border-[rgba(22,48,56,0.1)] bg-white shadow-[0_18px_40px_-30px_rgba(15,23,42,0.22)]">';
+      out += '<div class="overflow-x-auto">';
+      out += '<table class="min-w-full border-collapse text-sm text-left">';
+      if (block.headers && block.headers.length) {
+        out += '<thead class="bg-[rgba(234,244,243,0.72)] text-[var(--ink)]"><tr>';
+        block.headers.forEach(function (header) {
+          out += '<th class="border-b border-[rgba(22,48,56,0.08)] px-4 py-3 font-bold whitespace-nowrap">' + richText(header) + '</th>';
+        });
+        out += '</tr></thead>';
+      }
+      out += '<tbody>';
+      block.rows.forEach(function (row, rowIndex) {
+        out += '<tr class="' + (rowIndex === block.rows.length - 1 ? '' : 'border-b border-[rgba(22,48,56,0.08)]') + '">';
+        row.forEach(function (cell) {
+          out += '<td class="px-4 py-3 align-top text-gray-700 leading-relaxed">' + richText(cell) + '</td>';
+        });
+        out += '</tr>';
+      });
+      out += '</tbody></table></div></div>';
     } else if (block.type === 'blockquote') {
       out += '<blockquote class="guide-blockquote">' + richText(block.text) + '</blockquote>';
     } else if (block.type === 'photos' && block.items && block.items.length) {
