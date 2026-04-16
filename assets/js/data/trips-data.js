@@ -80,6 +80,23 @@ var TRIPS_DATA = [
     "featured": false
   },
   {
+    "slug": "test",
+    "name": "測測",
+    "summary": "測",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200",
+    "href": "#",
+    "tag": "",
+    "regions": [],
+    "countries": [],
+    "cities": [],
+    "year": 2025,
+    "days": 2,
+    "start": "2025-04-11",
+    "end": "",
+    "status": "草稿",
+    "featured": false
+  },
+  {
     "slug": "thailand-cambodia-travel",
     "name": "歷史交織的國度：泰國、柬埔寨",
     "summary": "走訪泰國與柬埔寨，感受現代都市與千年遺蹟的強烈對比。從大小吳哥的千年文化，看見高棉王朝昔日的輝煌巔峰；也看見了紅色高棉後重生與掙扎的強烈對比。",
@@ -99,8 +116,8 @@ var TRIPS_DATA = [
       "曼谷"
     ],
     "year": 2025,
-    "days": 10,
-    "start": "2025-10-03",
+    "days": 9,
+    "start": "2025-10-02",
     "end": "",
     "status": "已發佈",
     "featured": true
