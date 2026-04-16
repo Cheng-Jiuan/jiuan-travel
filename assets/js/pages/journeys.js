@@ -61,7 +61,7 @@
         })) return;
         var option = document.createElement('option');
         option.value = key;
-        option.textContent = '── ' + CONTINENT_LABELS[key];
+        option.textContent = CONTINENT_LABELS[key];
         regionSelect.appendChild(option);
       });
     }
