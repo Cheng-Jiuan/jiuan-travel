@@ -158,6 +158,10 @@ git commit -m "更新旅遊網站內容與前端結構"
 git push origin main
 ```
 
+## 7. 前端網址檢視
+```bash
+https://cheng-jiuan.github.io/jiuan-travel/index.html
+```
 ---
 
 ## 常見錯誤

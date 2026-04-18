@@ -5,44 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jiuan's Travel - 旅遊日記</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/theme.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&display=swap');
 
-    :root {
-      --ink: #14292f;
-      --sea: #2f6b73;
-      --sand: #f4ede2;
-      --fog: #dbe6e4;
-      --sun: #c7894f;
-      --paper: #fbf8f2;
-      --line: rgba(20, 41, 47, 0.12);
-      --muted: #6f7d80;
-    }
-
-    body {
-      font-family: "Avenir Next", "PingFang TC", "Noto Sans TC", sans-serif;
-      line-height: 1.7;
-      scroll-behavior: smooth;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at top left, rgba(199, 137, 79, 0.10), transparent 24%),
-        radial-gradient(circle at top right, rgba(47, 107, 115, 0.08), transparent 22%),
-        linear-gradient(180deg, var(--paper) 0%, #f6f4ee 34%, #f8faf9 100%);
-    }
-
-    .ui-sans { font-family: "Avenir Next", "PingFang TC", "Noto Sans TC", sans-serif; }
-    .display-serif { font-family: "Noto Serif TC", serif; }
-
     .hero-postcard {
-      box-shadow: 0 26px 65px rgba(20, 41, 47, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 28px 60px -36px rgba(75, 109, 118, 0.34);
+      border: 1px solid rgba(255, 255, 255, 0.24);
     }
 
     .archive-panel {
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      background: linear-gradient(180deg, rgba(15, 32, 38, 0.24), rgba(15, 32, 38, 0.12));
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.16));
       backdrop-filter: blur(16px);
-      box-shadow: 0 28px 60px -32px rgba(15, 23, 42, 0.45);
+      box-shadow: 0 24px 54px -34px rgba(95, 152, 163, 0.26);
     }
 
     .section-title {
@@ -54,9 +30,9 @@
 
     .explore-card {
       transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s, border-color 0.3s;
-      border-color: rgba(20, 41, 47, 0.12);
-      background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(244,237,226,0.72));
-      box-shadow: 0 18px 40px rgba(20, 41, 47, 0.08);
+      border-color: var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(245,251,252,0.86));
+      box-shadow: var(--soft-shadow);
     }
 
     .explore-grid.is-visible .explore-card {
@@ -76,35 +52,26 @@
     .explore-continent-grid.is-visible .explore-card { opacity: 1; transform: translateY(0); }
 
     .explore-card:hover {
-      box-shadow: 0 26px 58px -24px rgba(20, 41, 47, 0.18);
+      box-shadow: 0 28px 58px -30px rgba(95, 152, 163, 0.28);
       transform: translateY(-8px);
-      border-color: rgba(47, 107, 115, 0.25);
+      border-color: rgba(95, 152, 163, 0.28);
     }
 
     .mega-submenu-bridge { padding-left: 4px; margin-left: -4px; }
-    .filter-chip { transition: background-color 0.2s, color 0.2s, box-shadow 0.2s, border-color 0.2s; }
-    .filter-chip.is-active {
-      background-color: var(--sea);
-      color: white;
-      box-shadow: 0 12px 24px -14px rgba(47, 107, 115, 0.7);
-      border-color: transparent;
-    }
 
     .archive-card {
       border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(244,237,226,0.72));
-      box-shadow: 0 18px 42px -28px rgba(20, 41, 47, 0.16);
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(245,251,252,0.84));
+      box-shadow: 0 18px 42px -30px rgba(95, 152, 163, 0.22);
     }
 
     .tag-pill {
-      border: 1px solid rgba(47, 107, 115, 0.12);
-      background: rgba(219, 230, 228, 0.75);
       color: var(--sea);
     }
 
     #world-map {
       border: 1px solid var(--line) !important;
-      box-shadow: 0 26px 50px -34px rgba(20, 41, 47, 0.22) !important;
+      box-shadow: 0 24px 50px -34px rgba(95, 152, 163, 0.22) !important;
     }
 
     #back-to-top.is-visible { opacity: 1; pointer-events: auto; }
@@ -113,7 +80,7 @@
 <body class="leading-relaxed text-[var(--ink)]">
 
   <div id="site-footer-home-anchor"></div>
-  <nav class="ui-sans sticky top-0 z-50 border-b border-[rgba(20,41,47,0.08)] bg-[rgba(251,248,242,0.84)] shadow-[0_10px_30px_-26px_rgba(20,41,47,0.45)] backdrop-blur-xl" aria-label="五大洲導覽">
+  <nav class="ui-sans sticky top-0 z-50 border-b border-[rgba(95,152,163,0.12)] bg-[rgba(248,252,252,0.86)] shadow-[0_10px_30px_-26px_rgba(95,152,163,0.36)] backdrop-blur-xl" aria-label="五大洲導覽">
     <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col gap-3">
       <div class="flex items-center justify-between w-full">
         <div class="flex items-center gap-3 min-w-0">
@@ -130,33 +97,33 @@
     </div>
   </nav>
 
-  <header class="hero-postcard relative mx-auto mt-4 h-[540px] max-w-6xl overflow-hidden rounded-[2.3rem] bg-white">
-    <img src="https://images.unsplash.com/photo-1526392060635-9d6019884377?q=80&w=2070" class="h-full w-full object-cover">
-    <div class="absolute inset-0 bg-[linear-gradient(120deg,rgba(8,20,24,0.18),rgba(12,28,33,0.32),rgba(23,62,70,0.52),rgba(199,137,79,0.14))]"></div>
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.22),transparent_20%),radial-gradient(circle_at_bottom_left,rgba(199,137,79,0.18),transparent_24%)]"></div>
-    <div class="absolute inset-0 flex items-center px-6 py-8 text-white md:px-10">
+  <header class="hero-postcard relative mx-auto mt-4 h-[540px] max-w-6xl overflow-hidden rounded-[2.3rem] bg-[linear-gradient(180deg,#d8edf1_0%,#eef8fa_100%)]">
+    <img src="https://images.unsplash.com/photo-1526392060635-9d6019884377?q=80&w=2070" class="h-full w-full object-cover opacity-34 blur-[1px] scale-[1.02]">
+    <div class="absolute inset-0 bg-[linear-gradient(120deg,rgba(244,251,252,0.16),rgba(233,245,248,0.28),rgba(223,239,243,0.62),rgba(214,177,127,0.10))]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.72),transparent_20%),radial-gradient(circle_at_bottom_left,rgba(141,197,210,0.18),transparent_24%)]"></div>
+    <div class="absolute inset-0 flex items-center px-6 py-8 text-[var(--ink)] md:px-10">
       <div class="grid w-full gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:items-end">
         <div class="archive-panel max-w-3xl rounded-[2rem] px-6 py-7 md:px-8 md:py-9">
-          <p class="ui-sans mb-3 text-[11px] font-bold uppercase tracking-[0.38em] text-white/70">Travel Archive · Field Notes</p>
-          <h1 class="display-serif text-4xl font-bold leading-[1.08] md:text-[4rem] [text-shadow:0_10px_28px_rgba(11,23,27,0.32)]">把每一段移動，收攏成能回看的旅行檔案。</h1>
-          <p class="ui-sans mt-5 max-w-2xl text-sm leading-7 text-white/82 md:text-base">從南美高原、歐洲老城到亞洲夜色，這裡收錄的不只是攻略，而是每次出發後留下的路線、停留與情緒節奏。</p>
+          <p class="ui-sans mb-3 text-[11px] font-bold uppercase tracking-[0.38em] text-[var(--sea)]/70">Travel Archive · Field Notes</p>
+          <h1 class="display-serif text-4xl font-bold leading-[1.08] md:text-[4rem] [text-shadow:0_10px_24px_rgba(255,255,255,0.25)]">把每一段移動，收攏成能回看的旅行檔案。</h1>
+          <p class="ui-sans mt-5 max-w-2xl text-sm leading-7 text-[var(--ink)]/72 md:text-base">從南美高原、歐洲老城到亞洲夜色，這裡收錄的不只是攻略，而是每次出發後留下的路線、停留與情緒節奏。</p>
           <div class="ui-sans mt-8 flex flex-wrap items-center gap-3">
-            <a href="#explore-world" class="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/14 px-6 py-3 text-sm font-semibold tracking-wide text-white backdrop-blur-sm transition-all hover:bg-white/22 hover:scale-[1.02] active:scale-[0.98]">
+            <a href="#explore-world" class="btn-pill hover:scale-[1.02]">
               <span>開始探索</span>
               <svg class="h-4 w-4 motion-safe:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
             </a>
-            <a href="year-log.html" class="inline-flex items-center rounded-full border border-white/40 bg-[rgba(255,255,255,0.08)] px-6 py-3 text-sm font-medium text-white transition hover:bg-white/16">沿著年份回看</a>
+            <a href="year-log.html" class="btn-pill btn-pill-secondary">沿著年份回看</a>
           </div>
         </div>
         <div class="grid gap-3 lg:justify-self-end lg:max-w-[280px]">
-          <div class="archive-panel rounded-[1.6rem] px-5 py-4 text-white/88">
-            <p class="ui-sans text-[11px] font-bold uppercase tracking-[0.3em] text-white/55">Archive Focus</p>
-            <p class="display-serif mt-3 text-2xl text-white">routes, moods, memory</p>
-            <p class="ui-sans mt-3 text-sm leading-6 text-white/72">按洲別、年份與旅程回看，像翻一本慢慢擴充的個人旅行檔案。</p>
+          <div class="archive-panel rounded-[1.6rem] px-5 py-4 text-[var(--ink)]/84">
+            <p class="ui-sans text-[11px] font-bold uppercase tracking-[0.3em] text-[var(--sea)]/55">Archive Focus</p>
+            <p class="display-serif mt-3 text-2xl text-[var(--ink)]">routes, moods, memory</p>
+            <p class="ui-sans mt-3 text-sm leading-6 text-[var(--ink)]/68">按洲別、年份與旅程回看，像翻一本慢慢擴充的個人旅行檔案。</p>
           </div>
-          <div class="archive-panel rounded-[1.6rem] px-5 py-4 text-white/88">
-            <p class="ui-sans text-[11px] font-bold uppercase tracking-[0.3em] text-white/55">Start Here</p>
-            <p class="ui-sans mt-3 text-sm leading-6 text-white/76">第一次來，先看下方洲別探索；想快速回顧整體脈絡，直接進年份記錄。</p>
+          <div class="archive-panel rounded-[1.6rem] px-5 py-4 text-[var(--ink)]/84">
+            <p class="ui-sans text-[11px] font-bold uppercase tracking-[0.3em] text-[var(--sea)]/55">Start Here</p>
+            <p class="ui-sans mt-3 text-sm leading-6 text-[var(--ink)]/68">第一次來，先看下方洲別探索；想快速回顧整體脈絡，直接進年份記錄。</p>
           </div>
         </div>
       </div>
@@ -173,12 +140,12 @@
 
       <p class="ui-sans text-sm text-[var(--muted)] mb-6 max-w-2xl">先選一個洲別開始逛，或直接進入全部旅程，用國家與年份把路線慢慢翻開。</p>
       <div class="flex flex-wrap items-center gap-2 mb-8" id="explore-filters" role="navigation" aria-label="依大洲前往旅程列表">
-        <a href="journeys.html" class="filter-chip is-active px-4 py-2 rounded-full text-xs font-bold border border-transparent bg-white text-white shadow-sm">全部</a>
-        <a href="journeys.html?continent=asia" class="filter-chip px-4 py-2 rounded-full text-xs font-bold border border-[rgba(20,41,47,0.12)] bg-white/78 text-[var(--muted)] hover:border-[rgba(47,107,115,0.35)] hover:text-[var(--sea)]">亞洲</a>
-        <a href="journeys.html?continent=europe" class="filter-chip px-4 py-2 rounded-full text-xs font-bold border border-[rgba(20,41,47,0.12)] bg-white/78 text-[var(--muted)] hover:border-[rgba(47,107,115,0.35)] hover:text-[var(--sea)]">歐洲</a>
-        <a href="journeys.html?continent=africa" class="filter-chip px-4 py-2 rounded-full text-xs font-bold border border-[rgba(20,41,47,0.12)] bg-white/78 text-[var(--muted)] hover:border-[rgba(47,107,115,0.35)] hover:text-[var(--sea)]">非洲</a>
-        <a href="journeys.html?continent=americas" class="filter-chip px-4 py-2 rounded-full text-xs font-bold border border-[rgba(20,41,47,0.12)] bg-white/78 text-[var(--muted)] hover:border-[rgba(47,107,115,0.35)] hover:text-[var(--sea)]">美洲</a>
-        <a href="journeys.html?continent=oceania" class="filter-chip px-4 py-2 rounded-full text-xs font-bold border border-[rgba(20,41,47,0.12)] bg-white/78 text-[var(--muted)] hover:border-[rgba(47,107,115,0.35)] hover:text-[var(--sea)]">大洋洲</a>
+        <a href="journeys.html" class="filter-chip-soft is-active">全部</a>
+        <a href="journeys.html?continent=asia" class="filter-chip-soft">亞洲</a>
+        <a href="journeys.html?continent=europe" class="filter-chip-soft">歐洲</a>
+        <a href="journeys.html?continent=africa" class="filter-chip-soft">非洲</a>
+        <a href="journeys.html?continent=americas" class="filter-chip-soft">美洲</a>
+        <a href="journeys.html?continent=oceania" class="filter-chip-soft">大洋洲</a>
       </div>
       
       <div id="explore-continent-grid" class="explore-continent-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 items-stretch">

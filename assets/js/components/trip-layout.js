@@ -1,21 +1,22 @@
 function renderTripHeroSection(trip) {
   var tripTime = tripTimeLabel(trip);
   var heroImage = escapeHtml(resolveImagePath(trip.image));
+  var pillClass = 'travel-pill chip-soft chip-soft-plain';
   var html = '';
   html += '<header class="relative overflow-hidden">';
-  html += '<div class="relative h-[min(48vh,460px)] w-full overflow-hidden">';
-  html += '<img src="' + heroImage + '" alt="" class="w-full h-full object-cover">';
-  html += '<div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,18,22,0.16),rgba(12,29,34,0.38),rgba(12,29,34,0.78))]"></div>';
-  html += '<div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.18),transparent_26%),radial-gradient(circle_at_bottom_right,rgba(31,85,96,0.22),transparent_30%)]"></div>';
-  html += '<div class="absolute inset-x-0 bottom-0 px-4 pb-8 md:pb-10"><div class="max-w-6xl mx-auto"><div class="max-w-3xl rounded-[2rem] border border-white/12 bg-[rgba(10,20,24,0.28)] px-6 py-6 text-white shadow-[0_28px_60px_-32px_rgba(15,23,42,0.45)] backdrop-blur-xl md:px-8 md:py-8">';
-  html += '<p class="text-[11px] font-bold uppercase tracking-[0.34em] text-white/60 mb-3">Travel Guide · Jiuan\'s Travel</p>';
-  html += '<h1 class="max-w-3xl text-3xl font-semibold leading-tight text-white md:text-5xl lg:text-[3.9rem] lg:leading-[1.05]">' + escapeHtml(trip.name) + '</h1>';
-  if (trip.summary) html += '<p class="mt-4 max-w-2xl text-sm leading-7 text-white/82 md:text-base">' + escapeHtml(trip.summary) + '</p>';
+  html += '<div class="relative h-[min(42vh,380px)] w-full overflow-hidden bg-[linear-gradient(180deg,#d8edf1_0%,#eff8fa_100%)]">';
+  html += '<img src="' + heroImage + '" alt="" class="absolute inset-0 h-full w-full object-cover object-center opacity-32 blur-[1px] scale-[1.02]">';
+  html += '<div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(244,251,252,0.42),rgba(231,244,247,0.74),rgba(225,239,243,0.96))]"></div>';
+  html += '<div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.85),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(141,197,210,0.16),transparent_28%)]"></div>';
+  html += '<div class="absolute inset-x-0 bottom-0 px-4 pb-6 md:pb-8"><div class="max-w-6xl mx-auto"><div class="hero-panel max-w-3xl rounded-[2rem] px-6 py-6 text-[var(--ink)] md:px-8 md:py-8">';
+  html += '<p class="mb-3 text-[11px] font-bold uppercase tracking-[0.34em] text-[var(--sea)]/70">Travel Guide · Jiuan\'s Travel</p>';
+  html += '<h1 class="max-w-3xl text-3xl font-semibold leading-tight text-[var(--ink)] md:text-5xl lg:text-[3.7rem] lg:leading-[1.05]">' + escapeHtml(trip.name) + '</h1>';
+  if (trip.summary) html += '<p class="mt-4 max-w-2xl text-sm leading-7 text-[var(--ink)]/72 md:text-base">' + escapeHtml(trip.summary) + '</p>';
   html += '<div class="mt-5 flex flex-wrap gap-2">';
-  if (trip.year) html += '<span class="travel-pill">✦ ' + trip.year + '</span>';
-  if (trip.days) html += '<span class="travel-pill">⏳ 共 ' + trip.days + ' 天</span>';
-  if (tripTime) html += '<span class="travel-pill">🗓 ' + escapeHtml(tripTime) + '</span>';
-  if (trip.countries && trip.countries.length) html += '<span class="travel-pill">📍 ' + escapeHtml(trip.countries.join(' · ')) + '</span>';
+  if (trip.year) html += '<span class="' + pillClass + '">✦ ' + trip.year + '</span>';
+  if (trip.days) html += '<span class="' + pillClass + '">⏳ 共 ' + trip.days + ' 天</span>';
+  if (tripTime) html += '<span class="' + pillClass + '">🗓 ' + escapeHtml(tripTime) + '</span>';
+  if (trip.countries && trip.countries.length) html += '<span class="' + pillClass + '">📍 ' + escapeHtml(trip.countries.join(' · ')) + '</span>';
   html += '</div></div></div></div></div></header>';
   return html;
 }

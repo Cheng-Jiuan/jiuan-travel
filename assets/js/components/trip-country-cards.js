@@ -3,9 +3,9 @@ function renderTripCountryCardsSection(trip, detail, hasGuide) {
 
   var html = '';
   html += '<section class="sticky top-[52px] z-40 mt-8 bg-white/78 backdrop-blur-xl py-4 border-y border-slate-200/70 shadow-[0_12px_28px_-24px_rgba(15,23,42,0.32)]"><div class="max-w-6xl mx-auto px-4 flex flex-wrap justify-center gap-3">';
-  html += '<button type="button" class="trip-filter-btn active px-6 py-2 rounded-full text-xs font-bold transition-all bg-white border border-slate-200 text-slate-600 hover:border-sky-300" data-trip-filter="all">全部文章</button>';
+  html += '<button type="button" class="trip-filter-btn filter-chip-soft is-active" data-trip-filter="all">全部文章</button>';
   detail.countries.forEach(function (country) {
-    html += '<button type="button" class="trip-filter-btn px-6 py-2 rounded-full bg-white border border-gray-200 text-gray-600 text-xs font-bold hover:border-sky-300 transition-all" data-trip-filter="' + escapeHtml(country.name) + '">' + escapeHtml(country.name) + '</button>';
+    html += '<button type="button" class="trip-filter-btn filter-chip-soft" data-trip-filter="' + escapeHtml(country.name) + '">' + escapeHtml(country.name) + '</button>';
   });
   html += '</div></section>';
 
@@ -47,7 +47,7 @@ function renderTripCountryCardsSection(trip, detail, hasGuide) {
           label = String(spot);
           url = null;
         }
-        if (url) html += '<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0"></span><span>' + escapeHtml(label) + '</span><a href="' + escapeHtml(url) + '" target="_blank" rel="noopener" class="shrink-0 text-[10px] font-bold text-sky-600 bg-sky-50 hover:bg-sky-100 border border-sky-100 px-2 py-0.5 rounded-full transition-colors">地圖</a></li>';
+        if (url) html += '<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0"></span><span>' + escapeHtml(label) + '</span><a href="' + escapeHtml(url) + '" target="_blank" rel="noopener" class="btn-map-chip shrink-0">地圖</a></li>';
         else html += '<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0"></span><span>' + escapeHtml(label) + '</span></li>';
       });
       html += '</ul>';

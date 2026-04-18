@@ -5,26 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>全部旅程 - Jiuan's Travel</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/theme.css">
   <style>
-    :root{--ink:#163038;--sea:#2c6a74;--line:rgba(22,48,56,.12)}
-    html{scroll-behavior:smooth}
-    body{margin:0;color:var(--ink);line-height:1.7;font-family:"Avenir Next","PingFang TC","Noto Sans TC",sans-serif;background:radial-gradient(circle at top left,rgba(216,141,77,.08),transparent 26%),linear-gradient(180deg,#fbf8f2 0%,#f4f8f8 34%,#fafcfc 100%)}
-    .hero-shell{position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(36,98,108,.74),rgba(74,128,136,.56)),url('https://images.unsplash.com/photo-1488085061387-422e29b40080?q=80&w=1600') center/cover;box-shadow:0 22px 50px rgba(20,64,72,.12);border:1px solid rgba(31,85,96,.08)}
-    .hero-shell::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.08),transparent 35%),radial-gradient(circle at top right,rgba(255,255,255,.24),transparent 24%);pointer-events:none}
-    .filter-panel{border:1px solid var(--line);background:rgba(255,255,255,.82);box-shadow:0 20px 45px rgba(22,48,56,.06);backdrop-filter:blur(12px)}
-    #journey-grid a{border-radius:1.6rem!important;border:1px solid rgba(22,48,56,.10)!important;background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(246,239,229,.74))!important;box-shadow:0 14px 34px rgba(22,48,56,.06)!important;transition:transform .24s ease,box-shadow .24s ease,border-color .24s ease!important}
-    #journey-grid a:hover{transform:translateY(-4px);border-color:rgba(44,106,116,.28)!important;box-shadow:0 22px 40px rgba(22,48,56,.10)!important}
-    #journey-grid a h3{color:var(--ink)!important} #journey-grid a p{color:rgba(22,48,56,.68)!important} #journey-grid a span{background:rgba(44,106,116,.08)!important;color:var(--sea)!important}
+    .hero-shell{position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(244,251,252,.24),rgba(225,239,243,.88)),url('https://images.unsplash.com/photo-1488085061387-422e29b40080?q=80&w=1600') center/cover;box-shadow:0 28px 58px -36px rgba(95,152,163,.3);border:1px solid rgba(255,255,255,.28)}
+    .hero-shell::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.26),rgba(239,248,250,.42) 44%,rgba(231,244,247,.78)),radial-gradient(circle at top right,rgba(255,255,255,.72),transparent 24%);pointer-events:none}
+    .filter-panel{border:1px solid var(--line);background:rgba(255,255,255,.88);box-shadow:var(--soft-shadow);backdrop-filter:blur(12px)}
+    #journey-grid a{border-radius:1.6rem!important;border:1px solid rgba(95,152,163,.12)!important;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(245,251,252,.86))!important;box-shadow:0 18px 40px -30px rgba(95,152,163,.2)!important;transition:transform .24s ease,box-shadow .24s ease,border-color .24s ease!important}
+    #journey-grid a:hover{transform:translateY(-4px);border-color:rgba(95,152,163,.28)!important;box-shadow:0 24px 42px -28px rgba(95,152,163,.24)!important}
+    #journey-grid a h3{color:var(--ink)!important} #journey-grid a p{color:rgba(24,50,58,.68)!important} #journey-grid a span{background:rgba(237,247,248,.95)!important;color:var(--sea)!important}
   </style>
 </head>
 <body class="min-h-screen">
   <div id="site-header"></div>
 
-  <header class="hero-shell mx-auto mt-4 max-w-6xl rounded-[2rem] px-4 text-white sm:px-6 lg:px-8">
+  <header class="hero-shell mx-auto mt-4 max-w-6xl rounded-[2rem] px-4 text-[var(--ink)] sm:px-6 lg:px-8">
     <div class="relative z-10 py-10 md:py-14">
-      <p class="mb-3 text-[11px] font-bold uppercase tracking-[0.38em] text-white/82">Journey Index · Explore Archive</p>
-      <h1 class="max-w-3xl text-4xl font-bold leading-tight md:text-6xl [text-shadow:0_2px_18px_rgba(15,40,47,0.18)]">把所有旅程排開來看，像在翻一整本旅行目錄。</h1>
-      <p class="mt-4 max-w-2xl text-sm leading-7 text-white/94 md:text-base [text-shadow:0_1px_10px_rgba(15,40,47,0.12)]">依年份、洲別、國家與關鍵字篩選，快速找到想回味的那段路，或下一個想重新寫成故事的目的地。</p>
+      <p class="mb-3 text-[11px] font-bold uppercase tracking-[0.38em] text-[var(--sea)]/72">Journey Index · Explore Archive</p>
+      <h1 class="max-w-3xl text-4xl font-bold leading-tight md:text-6xl [text-shadow:0_8px_20px_rgba(255,255,255,0.24)]">把所有旅程排開來看，像在翻一整本旅行目錄。</h1>
+      <p class="mt-4 max-w-2xl text-sm leading-7 text-[var(--ink)]/72 md:text-base">依年份、洲別、國家與關鍵字篩選，快速找到想回味的那段路，或下一個想重新寫成故事的目的地。</p>
     </div>
   </header>
 
@@ -32,11 +30,11 @@
 
     <div class="filter-panel mb-8 rounded-[1.8rem] p-4 lg:p-5">
       <div class="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-end">
-        <div class="min-w-[200px] flex-1"><label for="q" class="mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-[var(--sea)]/55">搜尋</label><input type="search" id="q" placeholder="名稱或摘要…" autocomplete="off" class="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"></div>
-        <div class="w-full sm:w-40"><label for="f-region" class="mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-[var(--sea)]/55">洲／區域</label><select id="f-region" class="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-sky-400"><option value="">全部</option></select></div>
-        <div class="w-full sm:w-40"><label for="f-country" class="mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-[var(--sea)]/55">國家</label><select id="f-country" class="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-sky-400"><option value="">全部</option></select></div>
-        <div class="w-full sm:w-32"><label for="f-year" class="mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-[var(--sea)]/55">年份</label><select id="f-year" class="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-sky-400"><option value="">全部</option></select></div>
-        <button type="button" id="btn-reset" class="rounded-xl border border-sky-200 bg-sky-50 px-4 py-2 text-sm font-medium text-sky-700 transition-colors hover:bg-sky-100">重設</button>
+        <div class="min-w-[200px] flex-1"><label for="q" class="field-label">搜尋</label><input type="search" id="q" placeholder="名稱或摘要…" autocomplete="off" class="input-soft"></div>
+        <div class="w-full sm:w-40"><label for="f-region" class="field-label">洲／區域</label><select id="f-region" class="select-soft"><option value="">全部</option></select></div>
+        <div class="w-full sm:w-40"><label for="f-country" class="field-label">國家</label><select id="f-country" class="select-soft"><option value="">全部</option></select></div>
+        <div class="w-full sm:w-32"><label for="f-year" class="field-label">年份</label><select id="f-year" class="select-soft"><option value="">全部</option></select></div>
+        <button type="button" id="btn-reset" class="btn-pill px-4 py-2 text-sm">重設</button>
       </div>
     </div>
 

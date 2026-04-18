@@ -33,21 +33,27 @@ function renderTripGuideBlocks(sections) {
       });
       out += '</div>';
     } else if (block.type === 'table' && block.rows && block.rows.length) {
-      out += '<div class="my-6 overflow-hidden rounded-[1.4rem] border border-[rgba(22,48,56,0.1)] bg-white shadow-[0_18px_40px_-30px_rgba(15,23,42,0.22)]">';
+      out += '<div class="my-6 overflow-hidden rounded-[1.4rem] border border-[rgba(95,152,163,0.1)] bg-white shadow-[0_18px_40px_-30px_rgba(95,152,163,0.18)]">';
       out += '<div class="overflow-x-auto">';
-      out += '<table class="min-w-full border-collapse text-sm text-left">';
+      out += '<table class="min-w-full table-auto border-collapse text-sm text-left">';
       if (block.headers && block.headers.length) {
-        out += '<thead class="bg-[rgba(234,244,243,0.72)] text-[var(--ink)]"><tr>';
-        block.headers.forEach(function (header) {
-          out += '<th class="border-b border-[rgba(22,48,56,0.08)] px-4 py-3 font-bold whitespace-nowrap">' + richText(header) + '</th>';
+        out += '<thead class="bg-[rgba(237,247,248,0.95)] text-[var(--ink)]"><tr>';
+        block.headers.forEach(function (header, index) {
+          var widthClass = index === 0 ? 'w-[96px] sm:w-[110px]' : index === 1 ? 'w-[112px] sm:w-[140px]' : '';
+          out += '<th class="border-b border-[rgba(95,152,163,0.1)] px-5 py-3.5 font-bold align-top whitespace-normal ' + widthClass + '">' + richText(header) + '</th>';
         });
         out += '</tr></thead>';
       }
       out += '<tbody>';
       block.rows.forEach(function (row, rowIndex) {
-        out += '<tr class="' + (rowIndex === block.rows.length - 1 ? '' : 'border-b border-[rgba(22,48,56,0.08)]') + '">';
-        row.forEach(function (cell) {
-          out += '<td class="px-4 py-3 align-top text-gray-700 leading-relaxed">' + richText(cell) + '</td>';
+        out += '<tr class="' + (rowIndex === block.rows.length - 1 ? '' : 'border-b border-[rgba(95,152,163,0.08)]') + '">';
+        row.forEach(function (cell, cellIndex) {
+          var cellClass = cellIndex === 0
+            ? 'px-5 py-4 align-top text-[var(--ink)]/84 leading-8 whitespace-normal break-words min-w-[96px] sm:min-w-[110px]'
+            : cellIndex === 1
+              ? 'px-5 py-4 align-top text-[var(--ink)]/78 leading-8 whitespace-normal break-words min-w-[112px] sm:min-w-[140px]'
+              : 'px-5 py-4 align-top text-[var(--ink)]/78 leading-8 whitespace-normal break-words min-w-[220px]';
+          out += '<td class="' + cellClass + '">' + richText(cell) + '</td>';
         });
         out += '</tr>';
       });
@@ -108,11 +114,11 @@ function renderTripGuideSection(trip, guide) {
   if (guide.lead) html += '<p class="max-w-3xl text-lg leading-8 text-slate-800 md:text-[1.35rem] md:leading-9">' + richText(guide.lead) + '</p>';
   html += '</div>';
   html += '<div class="pt-8 md:pt-10">';
-  html += '<details class="lg:hidden mb-8 rounded-[1.5rem] border border-[rgba(31,85,96,0.1)] bg-[var(--foam)]/70 p-4 shadow-sm">';
+  html += '<details class="lg:hidden mb-8 rounded-[1.5rem] border border-[rgba(95,152,163,0.1)] bg-[var(--foam)]/72 p-4 shadow-sm">';
   html += '<summary class="cursor-pointer list-none text-sm font-bold text-[var(--ink)] [&::-webkit-details-marker]:hidden flex items-center justify-between gap-2"><span>重點整理（目錄）</span><span class="text-[var(--sea)] text-xs">點擊展開</span></summary>';
   html += '<div class="mt-4 pl-0.5">' + buildTripGuideTocNav(guide.toc) + '</div></details>';
-  html += '<div class="grid grid-cols-1 gap-10 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-14">';
-  html += '<aside class="hidden lg:block"><div class="sticky top-24 rounded-[1.7rem] border border-[rgba(22,48,56,0.09)] bg-white/88 p-5 shadow-[0_18px_45px_-28px_rgba(15,23,42,0.22)] backdrop-blur"><p class="text-[11px] font-bold uppercase tracking-[0.28em] text-[var(--sea)]/45 mb-3">重點整理</p>' + buildTripGuideTocNav(guide.toc) + '</div></aside>';
+  html += '<div class="grid grid-cols-1 gap-10 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-12">';
+  html += '<aside class="hidden lg:block"><div class="sticky top-24 rounded-[1.7rem] border border-[rgba(95,152,163,0.08)] bg-white/90 p-5 shadow-[0_18px_45px_-30px_rgba(95,152,163,0.18)] backdrop-blur"><p class="text-[11px] font-bold uppercase tracking-[0.28em] text-[var(--sea)]/45 mb-3">重點整理</p>' + buildTripGuideTocNav(guide.toc) + '</div></aside>';
   html += '<div class="guide-prose min-w-0 max-w-3xl">' + renderTripGuideBlocks(guide.sections) + '</div>';
   html += '</div></div></div></section>';
   return html;
