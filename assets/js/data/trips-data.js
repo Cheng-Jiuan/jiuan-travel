@@ -59,7 +59,7 @@ var TRIPS_DATA = [
     "slug": "amazon-rainforest",
     "name": "亞馬遜雨林：大自然動物交響曲",
     "summary": "那些錯過的事，帶走了我對「掌控」的執著。",
-    "image": "local: assets/trip-images/錯過雅馬遜雨林飛機/00.jpg",
+    "image": "assets/trip-images/amazon-rainforest/cover.jpg",
     "href": "#",
     "tag": "南美洲",
     "regions": [

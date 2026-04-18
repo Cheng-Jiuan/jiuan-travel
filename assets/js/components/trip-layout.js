@@ -1,9 +1,10 @@
 function renderTripHeroSection(trip) {
   var tripTime = tripTimeLabel(trip);
+  var heroImage = escapeHtml(resolveImagePath(trip.image));
   var html = '';
   html += '<header class="relative overflow-hidden">';
   html += '<div class="relative h-[min(48vh,460px)] w-full overflow-hidden">';
-  html += '<img src="' + escapeHtml(trip.image) + '" alt="" class="w-full h-full object-cover">';
+  html += '<img src="' + heroImage + '" alt="" class="w-full h-full object-cover">';
   html += '<div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,18,22,0.16),rgba(12,29,34,0.38),rgba(12,29,34,0.78))]"></div>';
   html += '<div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.18),transparent_26%),radial-gradient(circle_at_bottom_right,rgba(31,85,96,0.22),transparent_30%)]"></div>';
   html += '<div class="absolute inset-x-0 bottom-0 px-4 pb-8 md:pb-10"><div class="max-w-6xl mx-auto"><div class="max-w-3xl rounded-[2rem] border border-white/12 bg-[rgba(10,20,24,0.28)] px-6 py-6 text-white shadow-[0_28px_60px_-32px_rgba(15,23,42,0.45)] backdrop-blur-xl md:px-8 md:py-8">';

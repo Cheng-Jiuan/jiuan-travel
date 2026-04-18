@@ -59,7 +59,7 @@ function renderTripGuideBlocks(sections) {
       block.items.forEach(function (photo) {
         out += '<figure class="group mx-auto max-w-2xl overflow-hidden rounded-[1.4rem] border border-[rgba(22,48,56,0.08)] bg-white shadow-[0_16px_36px_-28px_rgba(15,23,42,0.22)]">';
         out += '<div class="aspect-[4/3] overflow-hidden bg-slate-100">';
-        out += '<img src="' + escapeHtml(photo.src) + '" alt="' + escapeHtml(photo.caption || '') + '" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]" loading="lazy" onerror="this.style.display=\'none\';this.parentNode.insertAdjacentHTML(\'beforeend\',\'<div class=&quot;flex h-full items-center justify-center px-6 text-center text-sm leading-6 text-slate-400&quot;>圖片載入失敗，請檢查 assets 路徑或檔名</div>\')">';
+        out += '<img src="' + escapeHtml(resolveImagePath(photo.src)) + '" alt="' + escapeHtml(photo.caption || '') + '" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]" loading="lazy" onerror="this.style.display=\'none\';this.parentNode.insertAdjacentHTML(\'beforeend\',\'<div class=&quot;flex h-full items-center justify-center px-6 text-center text-sm leading-6 text-slate-400&quot;>圖片載入失敗，請檢查 assets 路徑或檔名</div>\')">';
         out += '</div>';
         if (photo.caption) out += '<figcaption class="border-t border-slate-100 bg-[rgba(248,250,252,0.72)] px-4 py-2.5 text-[12px] italic leading-6 text-slate-500">' + escapeHtml(photo.caption) + '</figcaption>';
         out += '</figure>';

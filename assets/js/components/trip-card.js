@@ -2,7 +2,7 @@ function renderTripCardHTML(trip) {
   var href = escapeHtml(tripDetailUrl(trip));
   var name = escapeHtml(trip.name);
   var summary = escapeHtml(trip.summary);
-  var image = escapeHtml(trip.image);
+  var image = escapeHtml(resolveImagePath(trip.image));
   var tag = escapeHtml(trip.tag);
 
   return (

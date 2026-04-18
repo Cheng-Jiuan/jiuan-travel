@@ -64,13 +64,8 @@ var TRIP_DETAILS = {
         "text": "原本這趟旅程最期待的是雅馬遜雨林。甚至為了這趟旅行做了很多準備，亞馬遜雨林橫跨三個國家，秘魯、波利維亞、巴西，出發前我們做了很多研究，為了一探粉紅色海豚最後選擇了原始的波利維亞，很幸運最後看到了很多粉紅色海豚。"
       },
       {
-        "type": "photos",
-        "items": [
-          {
-            "src": "assets/trip-images/錯過雅馬遜雨林飛機/01.jpg",
-            "caption": "水豚君"
-          }
-        ]
+        "type": "p",
+        "text": "assets/trip-images/amazon-rainforest/01.jpg | caption: 水豚君"
       },
       {
         "type": "h2",

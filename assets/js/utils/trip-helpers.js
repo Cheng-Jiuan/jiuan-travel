@@ -8,6 +8,27 @@ function tripDetailUrl(trip) {
   return 'trip.html?slug=' + encodeURIComponent(tripIdentity(trip));
 }
 
+function resolveImagePath(path) {
+  if (!path) return '';
+
+  var value = String(path).trim();
+  if (!value) return '';
+
+  if (/^(https?:)?\/\//.test(value) || value.indexOf('data:') === 0 || value.indexOf('/') === 0) {
+    return value;
+  }
+
+  if (value.indexOf('local:') === 0) {
+    value = value.slice('local:'.length).trim();
+  }
+
+  if (value.indexOf('./') === 0) {
+    value = value.slice(2);
+  }
+
+  return value;
+}
+
 function getPublishedTrips(list) {
   return (list || []).filter(function (trip) {
     return trip && trip.status === '已發佈';
