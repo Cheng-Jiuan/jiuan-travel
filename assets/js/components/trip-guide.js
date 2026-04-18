@@ -1,10 +1,24 @@
 function renderTripGuideBlocks(sections) {
   if (!sections || !sections.length) return '';
   var out = '';
+  var seenGuideH2 = {};
+
+  function normalizedHeadingKey(text) {
+    return String(text || '').replace(/^[\u{1F300}-\u{1FAFF}\u2600-\u27BF\d\s\.、()（）-]+/gu, '').trim();
+  }
+
   sections.forEach(function (block) {
     if (!block || !block.type) return;
     if (block.type === 'h2') {
-      out += '<h2 id="' + escapeHtml(block.id) + '" class="guide-h2 scroll-mt-36">' + richText(block.text) + '</h2>';
+      var rawText = block.text || '';
+      var normalized = normalizedHeadingKey(rawText);
+      var isPrimaryGuideHeading = !normalized || !seenGuideH2[normalized];
+      if (normalized) seenGuideH2[normalized] = true;
+      if (isPrimaryGuideHeading) {
+        out += '<h2 id="' + escapeHtml(block.id) + '" class="guide-h2 scroll-mt-36">' + richText(rawText) + '</h2>';
+      } else {
+        out += '<h3 id="' + escapeHtml(block.id) + '" class="guide-h3 scroll-mt-36">' + richText(rawText) + '</h3>';
+      }
     } else if (block.type === 'p') {
       out += '<p class="guide-p">' + richText(block.text) + '</p>';
     } else if (block.type === 'ul' && block.items) {
